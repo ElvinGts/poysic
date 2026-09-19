@@ -147,7 +147,27 @@ export default function App() {
       }));
     });
 
+    // Navigasi sejarah pelayar (Back / Forward button)
+    const handlePopState = () => {
+      const currentParams = new URLSearchParams(window.location.search);
+      const roomParam = currentParams.get('room');
+      if (roomParam) {
+        setRoomId(roomParam);
+      } else {
+        const match = window.location.pathname.match(/\/room\/([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) {
+          setRoomId(match[1]);
+        } else {
+          setRoomId(null);
+          audio.pause();
+          setIsPlaying(false);
+        }
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+
     return () => {
+      window.removeEventListener('popstate', handlePopState);
       unregisterState();
       unregisterAutoplay();
       unregisterEnded();
@@ -156,6 +176,15 @@ export default function App() {
       audio.destroy();
     };
   }, []);
+
+  // Pra-muat (preload) trek seterusnya dalam senarai giliran untuk mengelakkan jeda
+  useEffect(() => {
+    if (queue.length > 0 && queue[0]?.audio) {
+      const preload = new Audio();
+      preload.preload = 'auto';
+      preload.src = queue[0].audio;
+    }
+  }, [queue]);
 
   // Pasang listener Socket.IO apabila bilik berubah (kekal stabil & bebas loop)
   useEffect(() => {
