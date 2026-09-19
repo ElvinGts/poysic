@@ -1,0 +1,15 @@
+{
+  "name": "poysic",
+  "private": true,
+  "version": "1.0.0",
+  "description": "PoySic — Dengar sama-sama, tak kira jauh. Real-time synchronized music player.",
+  "scripts": {
+    "dev:server": "cd server && npm run dev",
+    "dev:client": "cd client && npm run dev",
+    "build:server": "cd server && npm run build",
+    "build:client": "cd client && npm run build",
+    "build": "npm run build:server && npm run build:client",
+    "install:all": "cd server && npm install && cd ../client && npm install"
+  },
+  "license": "MIT"
+}
