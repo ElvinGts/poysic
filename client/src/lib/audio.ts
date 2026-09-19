@@ -132,6 +132,7 @@ export class SyncedAudio {
       return playPromise
         .then(() => {
           this.notifyAutoplayBlocked(false);
+          console.log(`[SyncedAudio] Playing at position ${this.audioElement.currentTime.toFixed(2)}s`);
         })
         .catch((error: Error) => {
           if (error.name === 'NotAllowedError') {
@@ -162,11 +163,13 @@ export class SyncedAudio {
 
   public pause(): void {
     this.audioElement.pause();
+    console.log(`[SyncedAudio] Paused at position ${this.audioElement.currentTime.toFixed(2)}s`);
   }
 
   public seek(time: number): void {
     if (Number.isFinite(time) && time >= 0) {
       this.audioElement.currentTime = time;
+      console.log(`[SyncedAudio] Seek to position ${time.toFixed(2)}s`);
       this.notifyState();
     }
   }
@@ -229,6 +232,7 @@ export class SyncedAudio {
 
   public setSource(src: string): void {
     if (this.audioElement.src !== src) {
+      console.log(`[SyncedAudio] Source changed to: ${src}`);
       this.audioElement.src = src;
       this.audioElement.load();
     }

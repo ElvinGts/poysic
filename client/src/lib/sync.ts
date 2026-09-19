@@ -57,6 +57,7 @@ export class ClockSync {
       // Waktu pelayan yang dianggarkan pada masa t1 ialah serverTime + latency
       // Offset = (serverTime + latency) - t1 = serverTime - (t1 - latency)
       this.offset = serverTime - (t1 - this.latency);
+      console.log(`[ClockSync] Ping RTT: ${roundTrip}ms | Offset: ${this.offset.toFixed(2)}ms`);
 
       // Maklumkan pemerhati UI
       const currentServerTime = this.getServerTime();
