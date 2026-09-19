@@ -632,7 +632,8 @@ export default function App() {
 
   const handleSearchJamendo = useCallback(async (query: string): Promise<Track[]> => {
     try {
-      const res = await fetch(`/api/tracks/search?q=${encodeURIComponent(query)}`);
+      const apiBase = import.meta.env.VITE_SOCKET_URL || '';
+      const res = await fetch(`${apiBase}/api/tracks/search?q=${encodeURIComponent(query)}`);
       if (res.ok) {
         const data = await res.json();
         if (data && data.results) {

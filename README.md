@@ -92,15 +92,41 @@ Aplikasi akan sedia pada `http://localhost:5173` (client) dengan backend pada `h
 
 ---
 
+## Panduan Deployment (Production)
+
+### 1. Backend Deployment (Render / Railway / Docker / VPS)
+- **Render:** Cipta *Web Service* baru, hubungkan repositori, tetapkan Root Directory ke `server/`, atau import `server/render.yaml`.
+- **Railway:** Hubungkan repositori dan tetapkan Root Directory ke `server/` (menggunakan `server/railway.json`).
+- **Docker / VPS:**
+  ```bash
+  cd server
+  docker build -t poysic-server .
+  docker run -d -p 3000:3000 --env-file .env poysic-server
+  ```
+- **Environment Variables Backend:**
+  - `PORT=3000`
+  - `NODE_ENV=production`
+  - `JAMENDO_CLIENT_ID=kunci_anda`
+  - `CLIENT_ORIGIN=https://poysic.vercel.app` (URL frontend anda)
+
+### 2. Frontend Deployment (Vercel / Netlify)
+- **Vercel:** Import repositori Git, pilih folder `client/` sebagai Root Directory (menggunakan `client/vercel.json`).
+- **Netlify:** Tetapkan Base directory ke `client/`, Build command `npm run build`, dan Publish directory `dist/` (menggunakan `client/netlify.toml`).
+- **Environment Variables Frontend:**
+  - `VITE_SOCKET_URL=https://poysic-api.onrender.com` (URL backend anda)
+
+---
+
 ## Dokumentasi Lanjut
 
 | Dokumen | Penerangan |
 |---|---|
+| [TESTING.md](docs/TESTING.md) | Panduan langkah demi langkah ujian sync 2-tab & console |
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Diagram sistem, aliran data, komponen |
 | [ROADMAP.md](docs/ROADMAP.md) | Pelan pembangunan Fasa 1–3 |
 | [SYNC_ENGINE.md](docs/SYNC_ENGINE.md) | Spesifikasi enjin sinkronisasi audio |
 | [API.md](docs/API.md) | Katalog lengkap Socket.IO events |
-| [AGENTS.md](AGENTS.md) | Panduan pasukan agent & konvensyen kod |
+| [AGENTS.md](AGENTS.md) | Panduan pasukan agent, konvensyen & sekatan tech stack |
 
 ---
 

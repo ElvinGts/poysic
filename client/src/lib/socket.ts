@@ -9,9 +9,10 @@ class SocketClient {
   public socket: Socket;
 
   private constructor() {
-    // Sambung ke origin semasa secara automatik (sesuai untuk port 3000, Vite dev proxy, dan Cloud Run reverse proxy)
+    // Sokong override VITE_SOCKET_URL untuk persekitaran pengeluaran (Vercel + Railway/Render)
+    const envSocketUrl = typeof import.meta !== 'undefined' && import.meta.env?.VITE_SOCKET_URL;
     const isBrowser = typeof window !== 'undefined';
-    const serverUrl = isBrowser ? window.location.origin : 'http://localhost:3000';
+    const serverUrl = envSocketUrl || (isBrowser ? window.location.origin : 'http://localhost:3000');
 
     this.socket = io(serverUrl, {
       autoConnect: true,

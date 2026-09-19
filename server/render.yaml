@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: poysic-server
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: JAMENDO_CLIENT_ID
+        sync: false
+      - key: CLIENT_ORIGIN
+        sync: false

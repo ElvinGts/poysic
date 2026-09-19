@@ -34,7 +34,7 @@ To ensure rapid, clean, and conflict-free engineering, development is partitione
 ┌──────────────▼─────────────┐ ┌──────────────▼─────────────┐ ┌──────────────▼─────────────┐
 │  Agent A (Frontend Lead)   │ │   Agent B (Backend Lead)   │ │ Agent C (Docs & Integration)│
 │  - Directory: client/      │ │  - Directory: server/      │ │  - Directory: docs/, root  │
-│  - React 18, Vite, UI      │ │  - Express, Socket.IO      │ │  - ARCHITECTURE.md, API.md │
+│  - React 19, Vite, UI      │ │  - Express, Socket.IO      │ │  - ARCHITECTURE.md, API.md │
 │  - SyncedAudio & ClockSync │ │  - Rooms, Queue, Jamendo   │ │  - ROADMAP.md, SYNC_ENGINE │
 │  - Hooks & Audio Visualizer│ │  - Cristian Clock Engine   │ │  - AGENTS.md, README.md    │
 └────────────────────────────┘ └────────────────────────────┘ └────────────────────────────┘
@@ -148,3 +148,21 @@ PoySic adheres to a strict anti-cheating policy:
 1. **Real Logic Only:** No dummy mocks, hardcoded test results, fake delay timers, or fabricated attestations.
 2. **Deterministic State:** Every component must maintain real state machines and produce verifiable runtime outcomes.
 3. **Auditing:** Independent verification routines inspect builds, types, and git histories against these specifications.
+
+---
+
+## 7. Tech Stack & Governance Decisions (STRICT LOCK)
+
+### 7.1 Locked Technology Stack
+- **Frontend:** React 19, TypeScript, Vite, Tailwind CSS, Motion, Lucide Icons, Socket.IO Client.
+- **Backend:** Node.js, Express, Socket.IO, TypeScript.
+- **Enjin Audio:** HTML5 Audio API dengan lapisan `SyncedAudio` drift correction (Cristian's algorithm).
+- **Muzik CC:** Jamendo API v3.0 (Creative Commons) dengan fallback tempatan.
+
+> [!CAUTION]
+> **Larangan Pengubahan Tech Stack:**
+> Tech stack PoySic dikunci secara mutlak kepada **React 19 + Vite** (Bukan Next.js). Semua ejen dilarang sama sekali daripada mengubah tech stack atau menambah kebergantungan baru tanpa kebenaran bertulis daripada pemilik projek (*owner*).
+
+### 7.2 Governance Changelog
+- **2026-09-19 (Owner Decision):** Pengesahan rasmi oleh pemilik projek bahawa PoySic menggunakan **React 19 + Vite** untuk frontend dan **Express + Socket.IO** untuk backend. Sebarang cadangan migrasi ke Next.js dibatalkan dan dilarang.
+
