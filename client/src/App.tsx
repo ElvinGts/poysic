@@ -722,12 +722,12 @@ export default function App() {
       </main>
 
       {/* Footer Ringkas */}
-      <footer className="border-t border-[#1C1C1C] py-5 px-4 text-xs font-mono text-[#666666] bg-[#0A0A0A]">
+      <footer className="border-t border-[#1C1C1C] py-5 px-4 text-xs font-mono text-[#8E8E8A] bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <div>
             <span>POYSIC MVP &bull; SINKRONISASI MASA NYATA &bull; JAMENDO CC</span>
           </div>
-          <div className="flex items-center gap-4 text-[#888884]">
+          <div className="flex items-center gap-4 text-[#A0A09C]">
             <button onClick={() => setIsDocsOpen(true)} className="hover:text-[#F5F3EE] transition">
               DOKUMENTASI
             </button>

@@ -34,10 +34,10 @@ export const QueueList: React.FC<QueueListProps> = ({
   return (
     <div className="flex flex-col h-full gap-4">
       {/* Tajuk & Aksi */}
-      <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+      <div className="flex items-center justify-between border-b border-[#222222] pb-3">
         <div className="flex items-center gap-2">
-          <ListMusic className="w-4 h-4 text-emerald-400" />
-          <h3 className="font-semibold text-white text-sm">
+          <ListMusic className="w-4 h-4 text-[#FF4D2E]" />
+          <h3 className="font-bold text-[#F5F3EE] text-sm font-mono uppercase tracking-wider">
             Senarai Giliran ({queue.length})
           </h3>
         </div>
@@ -45,19 +45,20 @@ export const QueueList: React.FC<QueueListProps> = ({
         {queue.length > 0 && isHost && (
           <button
             onClick={onClearQueue}
-            className="text-xs text-rose-400 hover:text-rose-300 flex items-center gap-1 hover:underline transition"
+            aria-label="Kosongkan senarai giliran"
+            className="text-xs text-[#FF4D2E] hover:underline flex items-center gap-1 font-mono transition"
           >
             <Trash2 className="w-3.5 h-3.5" />
-            <span>Kosongkan</span>
+            <span>KOSONGKAN</span>
           </button>
         )}
       </div>
 
       {/* Trek Semasa Dimainkan */}
       {currentTrack && (
-        <div className="bg-emerald-950/20 border border-emerald-500/30 rounded-xl p-3 flex items-center justify-between">
+        <div className="bg-[#1C120C] border border-[#FF4D2E]/60 rounded-none p-3 flex items-center justify-between">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 rounded-lg bg-slate-800 overflow-hidden flex-shrink-0 relative">
+            <div className="w-10 h-10 rounded-none bg-[#1A1A1A] border border-[#2E2E2E] overflow-hidden flex-shrink-0 relative">
               <img
                 src={currentTrack.image || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=80'}
                 alt={currentTrack.name}
@@ -65,19 +66,19 @@ export const QueueList: React.FC<QueueListProps> = ({
               />
             </div>
             <div className="min-w-0">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">
-                Sedang Dimainkan
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#A8E6CF]">
+                SEDANG DIMAINKAN
               </span>
-              <h4 className="text-xs font-semibold text-white truncate">
+              <h4 className="text-xs font-semibold text-[#F5F3EE] truncate">
                 {currentTrack.name}
               </h4>
-              <p className="text-[11px] text-slate-400 truncate">
+              <p className="text-[11px] text-[#8E8E8A] truncate font-mono">
                 {currentTrack.artist_name}
               </p>
             </div>
           </div>
 
-          <span className="text-[11px] font-mono text-emerald-400/80">
+          <span className="text-[11px] font-mono text-[#A8E6CF]">
             {formatDuration(currentTrack.duration)}
           </span>
         </div>
@@ -86,31 +87,32 @@ export const QueueList: React.FC<QueueListProps> = ({
       {/* Senarai Menunggu */}
       <div className="flex-1 overflow-y-auto space-y-2 pr-1 min-h-[250px]">
         {queue.length === 0 ? (
-          <div className="text-center py-12 text-slate-500 text-xs flex flex-col items-center gap-3">
-            <Disc className="w-8 h-8 text-slate-600 animate-pulse" />
-            <p>Senarai giliran kosong.</p>
-            <p className="text-slate-400 text-[11px] max-w-xs">
+          <div className="text-center py-12 text-[#8E8E8A] text-xs flex flex-col items-center gap-3">
+            <Disc className="w-8 h-8 text-[#555555] animate-pulse" />
+            <p className="font-mono">Senarai giliran kosong.</p>
+            <p className="text-[#8E8E8A] text-[11px] max-w-xs font-mono">
               Lagu akan dimainkan secara automatik mengikut susunan giliran sebaik sahaja lagu semasa tamat.
             </p>
             <button
               onClick={onSwitchToSearch}
-              className="mt-2 px-3.5 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl font-medium text-xs transition flex items-center gap-1.5"
+              aria-label="Cari dan tambah lagu ke giliran"
+              className="mt-2 px-3.5 py-1.5 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none font-bold text-xs font-mono transition flex items-center gap-1.5"
             >
-              <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
-              <span>Cari & Tambah Lagu</span>
+              <Sparkles className="w-3.5 h-3.5 fill-current" />
+              <span>CARI & TAMBAH LAGU</span>
             </button>
           </div>
         ) : (
           queue.map((track, idx) => (
             <div
               key={`${track.id}-${idx}`}
-              className="group flex items-center justify-between p-2.5 rounded-xl bg-slate-900/60 hover:bg-slate-850 border border-slate-800 transition"
+              className="group flex items-center justify-between p-2.5 rounded-none bg-[#111111] hover:bg-[#161616] border border-[#242424] transition"
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
-                <span className="w-5 text-center font-mono text-xs text-slate-500">
+                <span className="w-5 text-center font-mono text-xs text-[#8E8E8A]">
                   {idx + 1}
                 </span>
-                <div className="w-9 h-9 rounded-lg bg-slate-800 overflow-hidden flex-shrink-0">
+                <div className="w-9 h-9 rounded-none bg-[#1A1A1A] border border-[#2E2E2E] overflow-hidden flex-shrink-0">
                   <img
                     src={track.image || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=80'}
                     alt={track.name}
@@ -118,24 +120,25 @@ export const QueueList: React.FC<QueueListProps> = ({
                   />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h4 className="text-xs font-medium text-slate-200 truncate">
+                  <h4 className="text-xs font-medium text-[#F5F3EE] truncate">
                     {track.name}
                   </h4>
-                  <p className="text-[11px] text-slate-400 truncate">
+                  <p className="text-[11px] text-[#8E8E8A] truncate font-mono">
                     {track.artist_name}
                   </p>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 ml-2 flex-shrink-0">
-                <span className="text-[11px] font-mono text-slate-500 hidden sm:inline">
+                <span className="text-[11px] font-mono text-[#8E8E8A] hidden sm:inline">
                   {formatDuration(track.duration)}
                 </span>
 
                 <button
                   onClick={() => onPlayTrack(track)}
                   title="Mainkan Sekarang"
-                  className="p-1.5 bg-emerald-500/20 hover:bg-emerald-500 text-emerald-400 hover:text-slate-950 rounded-lg transition"
+                  aria-label={`Mainkan sekarang: ${track.name}`}
+                  className="p-1.5 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none transition font-bold"
                 >
                   <Play className="w-3.5 h-3.5 fill-current" />
                 </button>
@@ -143,7 +146,8 @@ export const QueueList: React.FC<QueueListProps> = ({
                 <button
                   onClick={() => onRemoveFromQueue(track.id)}
                   title="Buang dari Senarai Giliran"
-                  className="p-1.5 hover:bg-rose-500/20 text-slate-500 hover:text-rose-400 rounded-lg transition"
+                  aria-label={`Buang ${track.name} daripada senarai giliran`}
+                  className="p-1.5 text-[#8E8E8A] hover:text-[#FF4D2E] hover:bg-[#2A1412] border border-transparent hover:border-[#3D1A16] rounded-none transition"
                 >
                   <XCircle className="w-3.5 h-3.5" />
                 </button>
@@ -153,7 +157,7 @@ export const QueueList: React.FC<QueueListProps> = ({
         )}
       </div>
 
-      <div className="text-[11px] text-slate-500 border-t border-slate-800 pt-2 flex items-center justify-between">
+      <div className="text-[11px] font-mono text-[#8E8E8A] border-t border-[#222222] pt-2 flex items-center justify-between">
         <span>Auto-Play seterusnya diaktifkan secara tersinkron.</span>
       </div>
     </div>

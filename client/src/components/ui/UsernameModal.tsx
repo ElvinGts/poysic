@@ -89,19 +89,19 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
+      <div className="bg-[#0E0E0E] border border-[#262626] rounded-none w-full max-w-md overflow-hidden shadow-2xl flex flex-col font-sans">
         {/* Kepala Modal */}
-        <div className="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-900/60">
+        <div className="p-6 border-b border-[#222222] flex items-center justify-between bg-[#0A0A0A]">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-none bg-[#171717] border border-[#2E2E2E] text-[#FF4D2E] flex items-center justify-center">
               <User className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-bold text-white text-base">
+              <h3 className="font-normal text-[#F5F3EE] text-lg font-editorial">
                 {isJoining ? 'Pilih Nama Pengguna Anda' : 'Kemaskini Nama Pengguna'}
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#8E8E8A] font-mono">
                 {targetRoomId
                   ? `Menyertai bilik tersinkron: #${targetRoomId}`
                   : 'Nama ini dipaparkan kepada rakan pendengar'}
@@ -111,7 +111,8 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
           {onClose && !isJoining && (
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 transition"
+              aria-label="Tutup dialog nama pengguna"
+              className="p-1.5 text-[#8E8E8A] hover:text-[#F5F3EE] rounded-none hover:bg-[#1A1A1A] transition"
             >
               <X className="w-4 h-4" />
             </button>
@@ -121,18 +122,18 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
         {/* Borang Input */}
         <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-5">
           {/* Pratonton Avatar & Nama */}
-          <div className="flex items-center gap-4 p-3.5 bg-slate-950/60 border border-slate-800/80 rounded-2xl">
-            <div className="text-3xl p-2.5 bg-slate-800 border border-slate-700/80 rounded-2xl flex-shrink-0">
+          <div className="flex items-center gap-4 p-3.5 bg-[#0A0A0A] border border-[#242424] rounded-none">
+            <div className="text-3xl p-2.5 bg-[#171717] border border-[#2E2E2E] rounded-none flex-shrink-0">
               {avatar}
             </div>
             <div className="min-w-0 flex-1">
-              <span className="text-[10px] uppercase font-bold text-slate-500 block">
-                Pratonton Profil Bilik:
+              <span className="text-[10px] uppercase font-bold text-[#8E8E8A] block font-mono">
+                PRATONTON PROFIL:
               </span>
-              <p className="font-bold text-white text-sm truncate">
+              <p className="font-bold text-[#F5F3EE] text-sm truncate font-mono">
                 {username.trim() || 'Nama Pilihan Anda'}
               </p>
-              <span className="text-[11px] text-emerald-400 font-mono">
+              <span className="text-[11px] text-[#A8E6CF] font-mono">
                 {targetRoomId ? `Bilik: ${targetRoomId}` : 'Bersedia untuk sync'}
               </span>
             </div>
@@ -140,17 +141,18 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
               type="button"
               onClick={handleRandomize}
               title="Jana nama dan avatar rawak"
-              className="flex items-center gap-1 text-xs text-slate-400 hover:text-emerald-400 bg-slate-900 border border-slate-800 hover:border-slate-700 px-2.5 py-2 rounded-xl transition"
+              aria-label="Jana nama dan avatar rawak"
+              className="flex items-center gap-1 text-xs text-[#8E8E8A] hover:text-[#FF4D2E] bg-[#141414] border border-[#262626] hover:border-[#383838] px-2.5 py-2 rounded-none transition font-mono"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span className="text-[11px]">Rawak</span>
+              <span className="text-[11px]">RAWAK</span>
             </button>
           </div>
 
           {/* Kotak Input Nama */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-semibold text-slate-300">
-              Nama Panggilan / Samaran:
+            <label className="text-xs font-mono text-[#A0A09C]">
+              NAMA PANGGILAN / SAMARAN:
             </label>
             <input
               type="text"
@@ -162,33 +164,35 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
               }}
               placeholder="Contoh: Azim, Farah, DJ Malam..."
               maxLength={24}
-              className="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none transition"
+              aria-label="Nama samaran pendengar"
+              className="w-full bg-[#0A0A0A] border border-[#262626] focus:border-[#FF4D2E] rounded-none px-4 py-2.5 text-sm text-[#F5F3EE] placeholder-[#666666] focus:outline-none font-mono transition"
             />
             {error && (
-              <span className="text-xs text-rose-400 font-medium pl-1">
+              <span className="text-xs text-[#FF4D2E] font-medium pl-1 font-mono">
                 {error}
               </span>
             )}
-            <span className="text-[11px] text-slate-500 pl-1">
+            <span className="text-[11px] text-[#8E8E8A] pl-1 font-mono">
               Nama ini akan kelihatan pada kawalan pemain audio, senarai peserta, dan sembang masa nyata.
             </span>
           </div>
 
           {/* Pemilih Avatar */}
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold text-slate-300">
-              Pilih Ikon Avatar:
+            <label className="text-xs font-mono text-[#A0A09C]">
+              PILIH IKON AVATAR:
             </label>
-            <div className="grid grid-cols-8 gap-2 p-2 bg-slate-950/40 border border-slate-800/80 rounded-2xl">
+            <div className="grid grid-cols-8 gap-2 p-2 bg-[#0A0A0A] border border-[#242424] rounded-none">
               {AVATAR_LIST.map((av) => (
                 <button
                   key={av}
                   type="button"
                   onClick={() => setAvatar(av)}
-                  className={`text-xl p-2 rounded-xl transition flex items-center justify-center ${
+                  aria-label={`Pilih avatar ${av}`}
+                  className={`text-xl p-2 rounded-none transition flex items-center justify-center border ${
                     avatar === av
-                      ? 'bg-emerald-500/20 border border-emerald-500/60 scale-110 shadow'
-                      : 'hover:bg-slate-800 border border-transparent'
+                      ? 'bg-[#1C120C] border-[#FF4D2E] scale-105 shadow'
+                      : 'hover:bg-[#1A1A1A] border-transparent'
                   }`}
                 >
                   {av}
@@ -203,17 +207,19 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="flex-1 px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-semibold text-xs transition"
+                aria-label="Batal pemilihan profil"
+                className="flex-1 px-4 py-2.5 bg-[#171717] hover:bg-[#222222] text-[#A0A09C] hover:text-[#F5F3EE] rounded-none font-bold text-xs font-mono border border-[#2E2E2E] transition"
               >
-                {isJoining ? 'Batal' : 'Tutup'}
+                {isJoining ? 'BATAL' : 'TUTUP'}
               </button>
             )}
             <button
               type="submit"
-              className="flex-1 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl font-bold text-xs shadow-lg shadow-emerald-500/20 transition flex items-center justify-center gap-1.5"
+              aria-label={isJoining ? 'Sertai bilik sekarang' : 'Simpan perubahan profil'}
+              className="flex-1 px-4 py-2.5 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none font-bold text-xs font-mono shadow-lg transition flex items-center justify-center gap-1.5"
             >
               <Check className="w-4 h-4" />
-              <span>{isJoining ? 'Sertai Bilik Sekarang' : 'Simpan Perubahan'}</span>
+              <span>{isJoining ? 'SERTAI BILIK SEKARANG' : 'SIMPAN PERUBAHAN'}</span>
             </button>
           </div>
         </form>

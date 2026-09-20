@@ -26,6 +26,11 @@
     background-color: #FF4D2E;
     color: #0A0A0A;
   }
+
+  :focus-visible {
+    outline: 2px solid #FF4D2E;
+    outline-offset: 2px;
+  }
 }
 
 @keyframes spin-slow {

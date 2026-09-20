@@ -73,36 +73,39 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
       {/* Borang Carian Jamendo */}
       <form onSubmit={handleSearchSubmit} className="flex gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8E8E8A]" />
           <input
             type="text"
             placeholder="Cari trek Jamendo CC (cth: lofi, chill, acoustic, jazz)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-800 focus:border-emerald-500 focus:outline-none rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-500 transition"
+            aria-label="Cari trek Jamendo Creative Commons"
+            className="w-full bg-[#0C0C0C] border border-[#242424] focus:border-[#FF4D2E] focus:outline-none rounded-none pl-9 pr-3 py-2 text-xs font-mono text-[#F5F3EE] placeholder-[#666666] transition"
           />
         </div>
         <button
           type="submit"
           disabled={isSearching}
-          className="bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-slate-950 font-semibold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 text-xs sm:text-sm"
+          aria-label="Cari trek audio"
+          className="bg-[#FF4D2E] hover:bg-[#ff6145] disabled:opacity-50 text-[#0A0A0A] font-bold px-4 py-2 rounded-none transition flex items-center gap-1.5 text-xs font-mono"
         >
           {isSearching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
-          <span className="hidden sm:inline">Cari</span>
+          <span className="hidden sm:inline">CARI</span>
         </button>
       </form>
 
       {/* Bar Kategori Genre */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
         {GENRE_CATEGORIES.map((genre) => (
           <button
             key={genre}
             type="button"
             onClick={() => filterByGenre(genre)}
-            className={`px-3 py-1 text-xs font-medium rounded-lg whitespace-nowrap transition ${
+            aria-label={`Tapis mengikut genre ${genre}`}
+            className={`px-2.5 py-1 text-xs font-mono rounded-none whitespace-nowrap transition border ${
               selectedGenre === genre
-                ? 'bg-emerald-500 text-slate-950 font-semibold'
-                : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800'
+                ? 'bg-[#FF4D2E] text-[#0A0A0A] border-[#FF4D2E] font-bold'
+                : 'bg-[#141414] hover:bg-[#1C1C1C] text-[#8E8E8A] hover:text-[#F5F3EE] border-[#262626]'
             }`}
           >
             {genre}
@@ -113,12 +116,12 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
       {/* Senarai Hasil Lagu */}
       <div className="flex-1 overflow-y-auto space-y-2 pr-1 min-h-[300px]">
         {searchResults.length === 0 ? (
-          <div className="text-center py-12 text-slate-500 text-xs flex flex-col items-center gap-2">
-            <Disc className="w-8 h-8 text-slate-600 animate-pulse" />
-            <p>Tiada trek ditemui untuk carian tersebut.</p>
+          <div className="text-center py-12 text-[#8E8E8A] text-xs flex flex-col items-center gap-2">
+            <Disc className="w-8 h-8 text-[#555555] animate-pulse" />
+            <p className="font-mono">Tiada trek ditemui untuk carian tersebut.</p>
             <button
               onClick={() => filterByGenre('Semua')}
-              className="text-emerald-400 hover:underline text-xs mt-1"
+              className="text-[#FF4D2E] hover:underline text-xs mt-1 font-mono"
             >
               Kembali ke senarai pilihan popular
             </button>
@@ -131,15 +134,15 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
             return (
               <div
                 key={track.id}
-                className={`group flex items-center justify-between p-2.5 rounded-xl border transition ${
+                className={`group flex items-center justify-between p-2.5 rounded-none border transition ${
                   isCurrent
-                    ? 'bg-emerald-500/10 border-emerald-500/40'
-                    : 'bg-slate-900/60 hover:bg-slate-855 border-slate-800/80'
+                    ? 'bg-[#1C120C] border-[#FF4D2E]/60'
+                    : 'bg-[#111111] hover:bg-[#161616] border-[#242424]'
                 }`}
               >
                 {/* Info Album & Lagu */}
                 <div className="flex items-center gap-3 min-w-0 flex-1">
-                  <div className="relative w-11 h-11 rounded-lg overflow-hidden flex-shrink-0 bg-slate-800 border border-slate-700">
+                  <div className="relative w-11 h-11 rounded-none overflow-hidden flex-shrink-0 bg-[#1A1A1A] border border-[#2E2E2E]">
                     <img
                       src={track.image || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=80'}
                       alt={track.name}
@@ -147,8 +150,8 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
                       loading="lazy"
                     />
                     {isCurrent && (
-                      <div className="absolute inset-0 bg-emerald-950/60 flex items-center justify-center">
-                        <div className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-ping" />
+                      <div className="absolute inset-0 bg-[#0A0A0A]/70 flex items-center justify-center">
+                        <div className="w-2.5 h-2.5 bg-[#FF4D2E] rounded-full animate-ping" />
                       </div>
                     )}
                   </div>
@@ -156,17 +159,17 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <h4 className={`text-xs sm:text-sm font-semibold truncate ${
-                        isCurrent ? 'text-emerald-400' : 'text-slate-200'
+                        isCurrent ? 'text-[#FF4D2E]' : 'text-[#F5F3EE]'
                       }`}>
                         {track.name}
                       </h4>
                       {track.genre && (
-                        <span className="hidden sm:inline-block text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">
+                        <span className="hidden sm:inline-block text-[10px] uppercase font-mono px-1.5 py-0.5 rounded-none bg-[#1A1A1A] text-[#A8E6CF] border border-[#2A2A2A]">
                           {track.genre}
                         </span>
                       )}
                     </div>
-                    <p className="text-[11px] text-slate-400 truncate mt-0.5">
+                    <p className="text-[11px] text-[#8E8E8A] truncate mt-0.5 font-mono">
                       {track.artist_name} {track.album_name ? `• ${track.album_name}` : ''}
                     </p>
                   </div>
@@ -174,29 +177,31 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
 
                 {/* Butang Kawalan (Tambah & Main) */}
                 <div className="flex items-center gap-2 ml-3 flex-shrink-0">
-                  <span className="text-[11px] font-mono text-slate-500 hidden sm:inline">
+                  <span className="text-[11px] font-mono text-[#8E8E8A] hidden sm:inline">
                     {formatDuration(track.duration)}
                   </span>
 
                   <button
                     onClick={() => handleQueueClick(track)}
                     title="Tambah ke Giliran (Queue)"
-                    className={`p-2 rounded-lg text-xs font-medium transition flex items-center gap-1 ${
+                    aria-label={`Tambah ${track.name} ke senarai giliran`}
+                    className={`p-2 rounded-none text-xs font-mono transition flex items-center gap-1 border ${
                       isJustAdded
-                        ? 'bg-emerald-500 text-slate-950 font-bold'
-                        : 'bg-slate-800 hover:bg-slate-700 text-slate-300'
+                        ? 'bg-[#A8E6CF] text-[#0A0A0A] border-[#A8E6CF] font-bold'
+                        : 'bg-[#171717] hover:bg-[#222222] text-[#A0A09C] hover:text-[#F5F3EE] border-[#2A2A2A]'
                     }`}
                   >
                     <Plus className="w-3.5 h-3.5" />
-                    <span className="hidden lg:inline text-[11px]">
-                      {isJustAdded ? 'Ditambah!' : 'Queue'}
+                    <span className="hidden lg:inline text-[10px]">
+                      {isJustAdded ? 'DITAMBAH' : 'QUEUE'}
                     </span>
                   </button>
 
                   <button
                     onClick={() => onPlayTrack(track)}
                     title="Mainkan Sekarang dalam Bilik"
-                    className="p-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-lg transition font-semibold"
+                    aria-label={`Mainkan trek ${track.name}`}
+                    className="p-2 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none transition font-bold"
                   >
                     <Play className="w-3.5 h-3.5 fill-current" />
                   </button>
@@ -207,13 +212,13 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
         )}
       </div>
 
-      <div className="text-[11px] text-slate-500 flex items-center justify-between border-t border-slate-800/80 pt-2">
-        <span>Semua lagu di bawah lesen Jamendo Creative Commons (CC BY).</span>
+      <div className="text-[11px] font-mono text-[#8E8E8A] flex items-center justify-between border-t border-[#222222] pt-2">
+        <span>Lesen Jamendo Creative Commons (CC BY).</span>
         <a
           href="https://www.jamendo.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-emerald-400 hover:underline flex items-center gap-1"
+          className="text-[#A8E6CF] hover:underline flex items-center gap-1"
         >
           <span>Jamendo</span>
           <ExternalLink className="w-3 h-3" />

@@ -53,10 +53,10 @@ test('2-browser sync: create room in A, join in B, play, verify audio currentTim
     await pageB.click('body');
 
     // Jika modal nama muncul di Tab B, masukkan nama samaran dan klik mula
-    const joinModalInput = pageB.getByPlaceholder(/Nama samaran anda/i);
+    const joinModalInput = pageB.locator('input[placeholder*="Azim"], input[placeholder*="samaran"], input[aria-label*="samaran"]');
     if (await joinModalInput.isVisible({ timeout: 2000 }).catch(() => false)) {
       await joinModalInput.fill('Pendengar B');
-      const startBtn = pageB.getByRole('button', { name: /Mula Mendengar/i });
+      const startBtn = pageB.getByRole('button', { name: /Sertai Bilik/i });
       if (await startBtn.isVisible()) {
         await startBtn.click();
       }
@@ -69,6 +69,12 @@ test('2-browser sync: create room in A, join in B, play, verify audio currentTim
     // Pastikan kedua-dua halaman mempunyai interaksi pengguna aktif
     await pageA.click('body');
     await pageB.click('body');
+
+    // Jika ada notifikasi autoplay disekat pelayar di Tab B, klik Aktifkan Audio
+    const resumeBtnB = pageB.getByRole('button', { name: /Aktifkan Audio/i });
+    if (await resumeBtnB.isVisible({ timeout: 1000 }).catch(() => false)) {
+      await resumeBtnB.click();
+    }
 
     // Tunggu audio sedia dimuatkan (buffered) di kedua-dua tab sebelum mula bermain
     await pageA.waitForFunction(() => {
