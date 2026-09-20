@@ -125,9 +125,35 @@ app.get('/api/health', (_req: Request, res: Response<HealthResponse>) => {
   });
 });
 
+// Sliding window rate limiters for security and DoS prevention
+const searchRateLimits = new Map<string, number[]>();
+export function checkSearchRateLimit(ip: string, maxReqs = 60, windowMs = 60000): boolean {
+  const now = Date.now();
+  const timestamps = (searchRateLimits.get(ip) || []).filter((t) => now - t < windowMs);
+  if (timestamps.length >= maxReqs) return false;
+  timestamps.push(now);
+  searchRateLimits.set(ip, timestamps);
+  return true;
+}
+
+export const chatRateLimits = new Map<string, number[]>();
+export function checkChatRateLimit(socketId: string, maxMsgs = 8, windowMs = 1000): boolean {
+  const now = Date.now();
+  const timestamps = (chatRateLimits.get(socketId) || []).filter((t) => now - t < windowMs);
+  if (timestamps.length >= maxMsgs) return false;
+  timestamps.push(now);
+  chatRateLimits.set(socketId, timestamps);
+  return true;
+}
+
 // Search music tracks from Jamendo CC and/or Audius API
-app.get('/api/tracks/search', async (req: Request, res: Response<TracksResponse>) => {
+app.get('/api/tracks/search', async (req: Request, res: Response<TracksResponse | { error: string }>) => {
   try {
+    const clientIp = req.ip || req.socket.remoteAddress || 'unknown';
+    if (!checkSearchRateLimit(clientIp, 60, 60000)) {
+      return res.status(429).json({ error: 'Too many search requests, please slow down.' });
+    }
+
     const q = sanitizeSearchQuery(req.query.q);
     const source = typeof req.query.source === 'string' ? req.query.source.toLowerCase() : 'all';
 
@@ -442,6 +468,11 @@ io.on('connection', (socket: Socket) => {
   // 13. Social: In-Room Chat Message
   socket.on('room:chat', (payload: unknown) => {
     if (!isObject(payload) || !isNonEmptyString(payload.roomId) || !isNonEmptyString(payload.text)) return;
+    if (!checkChatRateLimit(socket.id, 8, 1000)) {
+      // Drop spam message silently to protect bandwidth and clients
+      return;
+    }
+
     const roomId = payload.roomId.trim();
     const text = payload.text.trim().slice(0, 300);
     const senderName = sanitizeString(payload.senderName, 'Rakan', 24);
@@ -484,6 +515,7 @@ io.on('connection', (socket: Socket) => {
 
   // 15. Socket Disconnect Handling (with garbage collection leak fix)
   socket.on('disconnect', () => {
+    chatRateLimits.delete(socket.id);
     const affectedRooms = roomManager.handleDisconnect(socket.id);
     for (const item of affectedRooms) {
       io.to(item.roomId).emit('room:user_left', {

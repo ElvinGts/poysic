@@ -290,7 +290,7 @@ export default function App() {
     const handleUserJoined = ({ participant, participants: allParticipants }: { participant: Participant; participants: Participant[] }) => {
       setParticipants(allParticipants);
       setChatMessages((prev) => [
-        ...prev,
+        ...prev.slice(-199),
         {
           id: Math.random().toString(36).substring(2, 9),
           senderId: 'system',
@@ -311,7 +311,7 @@ export default function App() {
       }
       if (userName) {
         setChatMessages((prev) => [
-          ...prev,
+          ...prev.slice(-199),
           {
             id: Math.random().toString(36).substring(2, 9),
             senderId: 'system',
@@ -342,7 +342,7 @@ export default function App() {
       }
       if (message) {
         setChatMessages((prev) => [
-          ...prev,
+          ...prev.slice(-199),
           {
             id: Math.random().toString(36).substring(2, 9),
             senderId: 'system',
@@ -364,7 +364,7 @@ export default function App() {
     };
 
     const handleChat = (message: ChatMessage) => {
-      setChatMessages((prev) => [...prev, message]);
+      setChatMessages((prev) => [...prev.slice(-199), message]);
     };
 
     const handleHeartbeat = ({ isPlaying: serverPlaying, position, timestamp, currentTrack: sTrack }: { isPlaying: boolean; position: number; timestamp: number; currentTrack?: Track }) => {
@@ -527,7 +527,7 @@ export default function App() {
     if (!isHostRef.current && roomId) {
       handleAddToQueue(track);
       setChatMessages((prev) => [
-        ...prev,
+        ...prev.slice(-199),
         {
           id: Math.random().toString(36).substring(2, 9),
           senderId: 'system',
