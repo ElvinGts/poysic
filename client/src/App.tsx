@@ -291,6 +291,10 @@ export default function App() {
 
     const handleUserLeft = ({ userName, participants: allParticipants }: { userName?: string; participants: Participant[] }) => {
       setParticipants(allParticipants);
+      const me = allParticipants.find((p) => p.id === socket.id);
+      if (me?.isHost) {
+        setIsHost(true);
+      }
       if (userName) {
         setChatMessages((prev) => [
           ...prev,

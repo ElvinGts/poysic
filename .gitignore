@@ -28,8 +28,10 @@ Thumbs.db
 # Vite
 *.local
 
-# Coverage
+# Coverage & Test Artifacts
 coverage/
+test-results/
+playwright-report/
 
 # Agent working files
 .agents/
