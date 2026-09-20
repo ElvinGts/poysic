@@ -34,3 +34,9 @@ coverage/
 # Agent working files
 .agents/
 .antigravity/
+
+# Media & Recordings
+*.webm
+*.mp4
+*.mkv
+*.avi
