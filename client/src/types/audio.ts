@@ -8,6 +8,8 @@ export type AudioStateCallback = (data: {
   duration: number;
   isPlaying: boolean;
   buffered: number;
+  isBuffering: boolean;
+  error: string | null;
 }) => void;
 
 export type AutoplayBlockedCallback = (blocked: boolean) => void;

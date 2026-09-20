@@ -76,8 +76,17 @@ export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
     // Buffer audio data
     const freqData = new Uint8Array(128);
     const timeData = new Uint8Array(128);
+    let lastRenderTime = 0;
 
-    const render = () => {
+    const render = (now: number) => {
+      const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+      // Jika pengguna memilih reduced motion, hadkan kepada kemaskini tenang (1 fps) untuk mengelakkan pening/vestibular strain
+      if (prefersReducedMotion && now - lastRenderTime < 1000) {
+        animationFrameRef.current = requestAnimationFrame(render);
+        return;
+      }
+      lastRenderTime = now;
+
       const {
         syncedAudio: audio,
         isPlaying: activePlaying,
@@ -380,10 +389,11 @@ export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
             type="button"
             onClick={() => setMode('waveform')}
             title="Tunjuk gelombang audio analog"
-            className={`px-2 py-0.5 text-[10px] font-mono transition-colors ${
+            aria-label="Mod gelombang audio analog"
+            className={`min-h-[44px] px-3 py-1 text-[11px] font-mono transition-colors flex items-center justify-center ${
               mode === 'waveform'
                 ? 'bg-[#FF4D2E] text-[#0A0A0A] font-bold'
-                : 'text-[#888884] hover:text-[#F5F3EE]'
+                : 'text-[#8E8E8A] hover:text-[#F5F3EE]'
             }`}
           >
             WAVE
@@ -392,10 +402,11 @@ export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
             type="button"
             onClick={() => setMode('bars')}
             title="Tunjuk equalizer spektrum jalur 36"
-            className={`px-2 py-0.5 text-[10px] font-mono transition-colors ${
+            aria-label="Mod equalizer spektrum jalur 36"
+            className={`min-h-[44px] px-3 py-1 text-[11px] font-mono transition-colors flex items-center justify-center ${
               mode === 'bars'
                 ? 'bg-[#FF4D2E] text-[#0A0A0A] font-bold'
-                : 'text-[#888884] hover:text-[#F5F3EE]'
+                : 'text-[#8E8E8A] hover:text-[#F5F3EE]'
             }`}
           >
             EQ
@@ -404,10 +415,11 @@ export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
             type="button"
             onClick={() => setMode('radial')}
             title="Tunjuk alur radial piring vinyl"
-            className={`px-2 py-0.5 text-[10px] font-mono transition-colors ${
+            aria-label="Mod alur radial piring vinyl"
+            className={`min-h-[44px] px-3 py-1 text-[11px] font-mono transition-colors flex items-center justify-center ${
               mode === 'radial'
                 ? 'bg-[#FF4D2E] text-[#0A0A0A] font-bold'
-                : 'text-[#888884] hover:text-[#F5F3EE]'
+                : 'text-[#8E8E8A] hover:text-[#F5F3EE]'
             }`}
           >
             RADIAL

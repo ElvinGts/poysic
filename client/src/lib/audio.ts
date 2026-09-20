@@ -20,6 +20,8 @@ export class SyncedAudio {
   private sourceNode: MediaElementAudioSourceNode | null = null;
   private hasConnectedMediaSource: boolean = false;
   private isAutoplayBlocked: boolean = false;
+  private isBuffering: boolean = false;
+  private errorMessage: string | null = null;
 
   constructor(src: string = '') {
     this.audioElement = new Audio(src);
@@ -36,6 +38,29 @@ export class SyncedAudio {
       this.notifyState();
     });
 
+    this.audioElement.addEventListener('playing', () => {
+      this.isBuffering = false;
+      this.errorMessage = null;
+      this.notifyState();
+    });
+
+    this.audioElement.addEventListener('waiting', () => {
+      this.isBuffering = true;
+      this.notifyState();
+    });
+
+    this.audioElement.addEventListener('stalled', () => {
+      if (!this.audioElement.paused) {
+        this.isBuffering = true;
+        this.notifyState();
+      }
+    });
+
+    this.audioElement.addEventListener('canplay', () => {
+      this.isBuffering = false;
+      this.notifyState();
+    });
+
     this.audioElement.addEventListener('pause', () => {
       this.notifyState();
     });
@@ -46,6 +71,16 @@ export class SyncedAudio {
 
     this.audioElement.addEventListener('error', (e) => {
       console.warn('[SyncedAudio] Audio element error:', e);
+      const mediaError = this.audioElement.error;
+      let msg = 'Ralat memuatkan trek audio. Sila cuba lagi.';
+      if (mediaError) {
+        if (mediaError.code === 1) msg = 'Pemuatan audio dibatalkan.';
+        else if (mediaError.code === 2) msg = 'Ralat rangkaian semasa memuatkan audio.';
+        else if (mediaError.code === 3) msg = 'Format audio rosak atau tidak disokong.';
+        else if (mediaError.code === 4) msg = 'Sumber trek audio tidak dapat diakses atau disekat.';
+      }
+      this.errorMessage = msg;
+      this.isBuffering = false;
       this.notifyState();
     });
   }
@@ -233,9 +268,31 @@ export class SyncedAudio {
   public setSource(src: string): void {
     if (this.audioElement.src !== src) {
       console.log(`[SyncedAudio] Source changed to: ${src}`);
+      this.errorMessage = null;
+      this.isBuffering = true;
       this.audioElement.src = src;
       this.audioElement.load();
+      this.notifyState();
     }
+  }
+
+  public retryPlayback(): Promise<void> {
+    this.errorMessage = null;
+    this.isBuffering = true;
+    this.notifyState();
+    if (this.audioElement.src) {
+      this.audioElement.load();
+      return this.play();
+    }
+    return Promise.resolve();
+  }
+
+  public getIsBuffering(): boolean {
+    return this.isBuffering;
+  }
+
+  public getErrorMessage(): string | null {
+    return this.errorMessage;
   }
 
   public onStateChange(callback: AudioStateCallback): () => void {
@@ -259,6 +316,8 @@ export class SyncedAudio {
       duration: this.audioElement.duration || 0,
       isPlaying: !this.audioElement.paused,
       buffered: this.getBufferedAmount(),
+      isBuffering: this.isBuffering,
+      error: this.errorMessage,
     };
     this.stateCallbacks.forEach((cb) => cb(data));
   }

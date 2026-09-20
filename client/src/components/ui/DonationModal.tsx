@@ -24,7 +24,7 @@ export const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose })
           <button
             onClick={onClose}
             aria-label="Tutup modal sumbangan"
-            className="p-1 text-[#8E8E8A] hover:text-[#F5F3EE] rounded-none hover:bg-[#1A1A1A] transition"
+            className="min-h-[44px] min-w-[44px] p-2 text-[#8E8E8A] hover:text-[#F5F3EE] rounded-none hover:bg-[#1A1A1A] transition flex items-center justify-center"
           >
             <X className="w-5 h-5" />
           </button>
@@ -55,7 +55,7 @@ export const DonationModal: React.FC<DonationModalProps> = ({ isOpen, onClose })
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Buka halaman Saweria (pautan luar)"
-              className="w-full py-3 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold rounded-none flex items-center justify-center gap-2 shadow-lg transition active:scale-98 font-mono text-xs"
+              className="min-h-[44px] w-full py-3 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold rounded-none flex items-center justify-center gap-2 shadow-lg transition active:scale-98 font-mono text-xs"
             >
               <span>BUKA HALAMAN SAWERIA</span>
               <ExternalLink className="w-4 h-4" />

@@ -27,7 +27,7 @@ export const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose }) => {
           <button
             onClick={onClose}
             aria-label="Tutup dokumentasi"
-            className="p-1 text-[#8E8E8A] hover:text-[#F5F3EE] rounded-none hover:bg-[#1A1A1A] transition"
+            className="min-h-[44px] min-w-[44px] p-2 text-[#8E8E8A] hover:text-[#F5F3EE] rounded-none hover:bg-[#1A1A1A] transition flex items-center justify-center"
           >
             <X className="w-5 h-5" />
           </button>
@@ -37,7 +37,7 @@ export const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose }) => {
         <div className="flex items-center gap-2 px-5 pt-3 border-b border-[#222222] bg-[#0A0A0A]">
           <button
             onClick={() => setActiveDoc('sync')}
-            className={`flex items-center gap-1.5 pb-3 px-2 text-xs font-mono font-semibold border-b-2 transition ${
+            className={`min-h-[44px] flex items-center gap-1.5 px-3 text-xs font-mono font-semibold border-b-2 transition ${
               activeDoc === 'sync'
                 ? 'border-[#FF4D2E] text-[#FF4D2E]'
                 : 'border-transparent text-[#8E8E8A] hover:text-[#F5F3EE]'
@@ -49,7 +49,7 @@ export const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose }) => {
 
           <button
             onClick={() => setActiveDoc('architecture')}
-            className={`flex items-center gap-1.5 pb-3 px-2 text-xs font-mono font-semibold border-b-2 transition ${
+            className={`min-h-[44px] flex items-center gap-1.5 px-3 text-xs font-mono font-semibold border-b-2 transition ${
               activeDoc === 'architecture'
                 ? 'border-[#FF4D2E] text-[#FF4D2E]'
                 : 'border-transparent text-[#8E8E8A] hover:text-[#F5F3EE]'
@@ -61,7 +61,7 @@ export const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose }) => {
 
           <button
             onClick={() => setActiveDoc('roadmap')}
-            className={`flex items-center gap-1.5 pb-3 px-2 text-xs font-mono font-semibold border-b-2 transition ${
+            className={`min-h-[44px] flex items-center gap-1.5 px-3 text-xs font-mono font-semibold border-b-2 transition ${
               activeDoc === 'roadmap'
                 ? 'border-[#FF4D2E] text-[#FF4D2E]'
                 : 'border-transparent text-[#8E8E8A] hover:text-[#F5F3EE]'
@@ -141,7 +141,7 @@ export const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose }) => {
           <button
             onClick={onClose}
             aria-label="Tutup dokumentasi"
-            className="px-4 py-2 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold rounded-none text-xs font-mono transition"
+            className="min-h-[44px] px-5 py-2 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold rounded-none text-xs font-mono transition flex items-center justify-center"
           >
             TUTUP
           </button>

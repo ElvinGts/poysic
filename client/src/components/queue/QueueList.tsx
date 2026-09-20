@@ -46,7 +46,7 @@ export const QueueList: React.FC<QueueListProps> = ({
           <button
             onClick={onClearQueue}
             aria-label="Kosongkan senarai giliran"
-            className="text-xs text-[#FF4D2E] hover:underline flex items-center gap-1 font-mono transition"
+            className="min-h-[44px] px-2 text-xs text-[#FF4D2E] hover:underline flex items-center gap-1 font-mono transition"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span>KOSONGKAN</span>
@@ -96,7 +96,7 @@ export const QueueList: React.FC<QueueListProps> = ({
             <button
               onClick={onSwitchToSearch}
               aria-label="Cari dan tambah lagu ke giliran"
-              className="mt-2 px-3.5 py-1.5 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none font-bold text-xs font-mono transition flex items-center gap-1.5"
+              className="min-h-[44px] mt-2 px-4 py-2 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none font-bold text-xs font-mono transition flex items-center justify-center gap-1.5"
             >
               <Sparkles className="w-3.5 h-3.5 fill-current" />
               <span>CARI & TAMBAH LAGU</span>
@@ -138,7 +138,7 @@ export const QueueList: React.FC<QueueListProps> = ({
                   onClick={() => onPlayTrack(track)}
                   title="Mainkan Sekarang"
                   aria-label={`Mainkan sekarang: ${track.name}`}
-                  className="p-1.5 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none transition font-bold"
+                  className="min-h-[44px] min-w-[44px] p-2 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none transition font-bold flex items-center justify-center"
                 >
                   <Play className="w-3.5 h-3.5 fill-current" />
                 </button>
@@ -147,7 +147,7 @@ export const QueueList: React.FC<QueueListProps> = ({
                   onClick={() => onRemoveFromQueue(track.id)}
                   title="Buang dari Senarai Giliran"
                   aria-label={`Buang ${track.name} daripada senarai giliran`}
-                  className="p-1.5 text-[#8E8E8A] hover:text-[#FF4D2E] hover:bg-[#2A1412] border border-transparent hover:border-[#3D1A16] rounded-none transition"
+                  className="min-h-[44px] min-w-[44px] p-2 text-[#8E8E8A] hover:text-[#FF4D2E] hover:bg-[#2A1412] border border-transparent hover:border-[#3D1A16] rounded-none transition flex items-center justify-center"
                 >
                   <XCircle className="w-3.5 h-3.5" />
                 </button>

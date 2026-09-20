@@ -87,7 +87,7 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
           type="submit"
           disabled={isSearching}
           aria-label="Cari trek audio"
-          className="bg-[#FF4D2E] hover:bg-[#ff6145] disabled:opacity-50 text-[#0A0A0A] font-bold px-4 py-2 rounded-none transition flex items-center gap-1.5 text-xs font-mono"
+          className="min-h-[44px] bg-[#FF4D2E] hover:bg-[#ff6145] disabled:opacity-50 text-[#0A0A0A] font-bold px-4 py-2 rounded-none transition flex items-center justify-center gap-1.5 text-xs font-mono"
         >
           {isSearching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
           <span className="hidden sm:inline">CARI</span>
@@ -102,7 +102,7 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
             type="button"
             onClick={() => filterByGenre(genre)}
             aria-label={`Tapis mengikut genre ${genre}`}
-            className={`px-2.5 py-1 text-xs font-mono rounded-none whitespace-nowrap transition border ${
+            className={`min-h-[44px] px-3.5 py-2 text-xs font-mono rounded-none whitespace-nowrap transition border flex items-center justify-center ${
               selectedGenre === genre
                 ? 'bg-[#FF4D2E] text-[#0A0A0A] border-[#FF4D2E] font-bold'
                 : 'bg-[#141414] hover:bg-[#1C1C1C] text-[#8E8E8A] hover:text-[#F5F3EE] border-[#262626]'
@@ -121,7 +121,7 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
             <p className="font-mono">Tiada trek ditemui untuk carian tersebut.</p>
             <button
               onClick={() => filterByGenre('Semua')}
-              className="text-[#FF4D2E] hover:underline text-xs mt-1 font-mono"
+              className="min-h-[44px] text-[#FF4D2E] hover:underline text-xs mt-1 font-mono flex items-center"
             >
               Kembali ke senarai pilihan popular
             </button>
@@ -185,7 +185,7 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
                     onClick={() => handleQueueClick(track)}
                     title="Tambah ke Giliran (Queue)"
                     aria-label={`Tambah ${track.name} ke senarai giliran`}
-                    className={`p-2 rounded-none text-xs font-mono transition flex items-center gap-1 border ${
+                    className={`min-h-[44px] min-w-[44px] p-2.5 rounded-none text-xs font-mono transition flex items-center justify-center gap-1 border ${
                       isJustAdded
                         ? 'bg-[#A8E6CF] text-[#0A0A0A] border-[#A8E6CF] font-bold'
                         : 'bg-[#171717] hover:bg-[#222222] text-[#A0A09C] hover:text-[#F5F3EE] border-[#2A2A2A]'
@@ -201,7 +201,7 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
                     onClick={() => onPlayTrack(track)}
                     title="Mainkan Sekarang dalam Bilik"
                     aria-label={`Mainkan trek ${track.name}`}
-                    className="p-2 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none transition font-bold"
+                    className="min-h-[44px] min-w-[44px] p-2.5 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none transition font-bold flex items-center justify-center"
                   >
                     <Play className="w-3.5 h-3.5 fill-current" />
                   </button>

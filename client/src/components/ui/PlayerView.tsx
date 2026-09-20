@@ -50,7 +50,10 @@ interface PlayerViewProps {
   currentUserId: string;
   syncedAudio?: SyncedAudio | null;
   isAutoplayBlocked?: boolean;
+  isBuffering?: boolean;
+  audioError?: string | null;
   onResumeAudio?: () => void;
+  onRetryAudio?: () => void;
   onPlay: () => void;
   onPause: () => void;
   onSeek: (position: number) => void;
@@ -88,7 +91,10 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
   currentUserId,
   syncedAudio,
   isAutoplayBlocked,
+  isBuffering,
+  audioError,
   onResumeAudio,
+  onRetryAudio,
   onPlay,
   onPause,
   onSeek,
@@ -169,7 +175,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
           </div>
         </div>
 
-        {/* Senarai Rakan & Butang Kongsi */}
+          {/* Senarai Rakan & Butang Kongsi */}
         <div className="flex items-center gap-2">
           {/* Avatar Peserta & Butang Akses Tab Peserta */}
           <button
@@ -177,7 +183,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             onClick={() => setActiveTab('participants')}
             title="Lihat semua peserta dalam bilik ini"
             aria-label="Lihat senarai peserta dalam bilik ini"
-            className="flex items-center gap-2 px-3 py-1.5 bg-[#171717] hover:bg-[#202020] border border-[#2E2E2E] transition group"
+            className="min-h-[44px] flex items-center gap-2 px-3 py-2 bg-[#171717] hover:bg-[#202020] border border-[#2E2E2E] transition group"
           >
             <div className="flex items-center -space-x-1.5 overflow-hidden">
               {participants.slice(0, 4).map((p) => (
@@ -201,7 +207,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
             onClick={handleCopy}
             title="Salin pautan bilik"
             aria-label="Salin pautan bilik"
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#171717] hover:bg-[#222222] text-[#A8E6CF] border border-[#2E2E2E] text-xs font-mono transition"
+            className="min-h-[44px] flex items-center gap-1.5 px-3 py-2 bg-[#171717] hover:bg-[#222222] text-[#A8E6CF] border border-[#2E2E2E] text-xs font-mono transition"
           >
             {copiedLink ? <Check className="w-3.5 h-3.5 text-[#A8E6CF]" /> : <Share2 className="w-3.5 h-3.5" />}
             <span className="hidden sm:inline">{copiedLink ? 'DISALIN' : 'KONGSI BILIK'}</span>
@@ -240,12 +246,40 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               onClick={onForceSync}
               title="Paksa pengiraan semula offset jam (Cristian's Sync)"
               aria-label="Paksa pengiraan semula offset jam"
-              className="hover:text-[#A8E6CF] flex items-center gap-1.5 transition text-[10px] uppercase font-mono"
+              className="min-h-[44px] px-2 hover:text-[#A8E6CF] flex items-center gap-1.5 transition text-[10px] uppercase font-mono"
             >
               <RefreshCw className="w-3 h-3" />
               <span>SYNC SEMULA</span>
             </button>
           </div>
+
+          {/* Penunjuk Menimbal Audio (Buffering Indicator) */}
+          {isBuffering && (
+            <div className="w-full mb-3 px-3 py-2.5 bg-[#141414] border border-[#A8E6CF]/60 flex items-center justify-center gap-2.5 text-xs font-mono text-[#A8E6CF] animate-pulse">
+              <RefreshCw className="w-4 h-4 animate-spin text-[#A8E6CF]" />
+              <span className="font-bold tracking-wider">MENIMBAL AUDIO...</span>
+            </div>
+          )}
+
+          {/* Makluman Ralat Audio (Audio Error Handler) */}
+          {audioError && (
+            <div className="w-full mb-3 px-3 py-2.5 bg-[#2A1412] border border-[#FF4D2E] flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2 text-[#FF9B85] text-xs font-mono text-left">
+                <VolumeX className="w-4 h-4 text-[#FF4D2E] shrink-0" />
+                <span>{audioError}</span>
+              </div>
+              {onRetryAudio && (
+                <button
+                  onClick={onRetryAudio}
+                  aria-label="Cuba semula memuatkan audio"
+                  className="min-h-[44px] px-3 py-1.5 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-mono text-[10px] uppercase font-bold tracking-wider transition shrink-0 flex items-center gap-1.5"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>CUBA SEMULA</span>
+                </button>
+              )}
+            </div>
+          )}
 
           {/* Makluman Sekatan Autoplay Pelayar */}
           {isAutoplayBlocked && (
@@ -257,7 +291,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               <button
                 onClick={onResumeAudio}
                 aria-label="Aktifkan audio pelayar"
-                className="px-3 py-1 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-mono text-[10px] uppercase font-bold tracking-wider transition shrink-0"
+                className="min-h-[44px] px-3 py-1.5 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-mono text-[10px] uppercase font-bold tracking-wider transition shrink-0 flex items-center justify-center"
               >
                 Aktifkan Audio
               </button>
@@ -361,7 +395,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                   onSeek(duration);
                 }
               }}
-              className="w-full h-2 bg-[#1A1A1A] border border-[#2A2A2A] cursor-pointer relative group flex items-center focus:outline-none focus:border-[#FF4D2E]"
+              className="w-full py-4 -my-3 cursor-pointer relative group flex items-center focus:outline-none"
               onClick={(e) => {
                 if (!isHost) return;
                 const rect = e.currentTarget.getBoundingClientRect();
@@ -369,10 +403,12 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 onSeek(Math.max(0, Math.min(duration, pos)));
               }}
             >
-              <div
-                style={{ width: `${progressPercent}%` }}
-                className="h-full bg-[#FF4D2E] relative transition-all duration-100"
-              />
+              <div className="w-full h-2 bg-[#1A1A1A] border border-[#2A2A2A] relative group-focus:border-[#FF4D2E]">
+                <div
+                  style={{ width: `${progressPercent}%` }}
+                  className="h-full bg-[#FF4D2E] relative transition-all duration-100"
+                />
+              </div>
             </div>
 
             <div className="flex justify-between text-[10px] font-mono text-[#8E8E8A]">
@@ -388,7 +424,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               disabled={!isHost}
               title={isHost ? 'Lagu Sebelum / Ulang' : 'Hanya hos boleh lompat trek'}
               aria-label="Lagu sebelumnya"
-              className="p-2.5 text-[#A0A09C] hover:text-[#F5F3EE] hover:bg-[#1C1C1C] disabled:opacity-30 border border-transparent hover:border-[#2C2C2C] transition"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2.5 text-[#A0A09C] hover:text-[#F5F3EE] hover:bg-[#1C1C1C] disabled:opacity-30 border border-transparent hover:border-[#2C2C2C] transition"
             >
               <SkipBack className="w-5 h-5" />
             </button>
@@ -410,7 +446,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                   : 'Main Muzik'
               }
               aria-label={isPlaying ? 'Jeda muzik' : 'Main muzik'}
-              className="p-4 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] disabled:opacity-30 disabled:cursor-not-allowed transition transform active:scale-95"
+              className="min-h-[52px] min-w-[52px] flex items-center justify-center p-4 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] disabled:opacity-30 disabled:cursor-not-allowed transition transform active:scale-95"
             >
               {isPlaying ? (
                 <Pause className="w-6 h-6 fill-[#0A0A0A]" />
@@ -424,19 +460,19 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               disabled={!isHost}
               title={isHost ? 'Lompat Trek Seterusnya' : 'Hanya hos boleh lompat trek'}
               aria-label="Lagu seterusnya"
-              className="p-2.5 text-[#A0A09C] hover:text-[#F5F3EE] hover:bg-[#1C1C1C] disabled:opacity-30 border border-transparent hover:border-[#2C2C2C] transition"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2.5 text-[#A0A09C] hover:text-[#F5F3EE] hover:bg-[#1C1C1C] disabled:opacity-30 border border-transparent hover:border-[#2C2C2C] transition"
             >
               <SkipForward className="w-5 h-5" />
             </button>
           </div>
 
           {/* Kawalan Kelantangan Suara (Volume Slider) */}
-          <div className="w-full max-w-xs flex items-center gap-3 px-2 py-2 bg-[#0C0C0C] border border-[#222222]">
+          <div className="w-full max-w-xs flex items-center gap-3 px-2 py-2 bg-[#0C0C0C] border border-[#222222] min-h-[44px]">
             <button
               onClick={onToggleMute}
               title={isMuted ? 'Buka Suara' : 'Senyapkan'}
               aria-label={isMuted ? 'Buka suara' : 'Senyapkan audio'}
-              className="text-[#A0A09C] hover:text-[#F5F3EE] transition"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center text-[#A0A09C] hover:text-[#F5F3EE] transition -ml-1"
             >
               {isMuted || volume === 0 ? (
                 <VolumeX className="w-4 h-4 text-[#FF4D2E]" />
@@ -485,9 +521,9 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               onClick={onChangeUsername}
               title="Tukar nama panggilan atau lencana anda"
               aria-label="Tukar nama panggilan atau lencana anda"
-              className="flex items-center gap-1 text-[10px] font-mono text-[#A0A09C] hover:text-[#F5F3EE] bg-[#171717] hover:bg-[#222222] border border-[#2E2E2E] px-2.5 py-1 transition shrink-0"
+              className="min-h-[44px] flex items-center gap-1.5 text-[10px] font-mono text-[#A0A09C] hover:text-[#F5F3EE] bg-[#171717] hover:bg-[#222222] border border-[#2E2E2E] px-3 py-1.5 transition shrink-0"
             >
-              <User className="w-3 h-3" />
+              <User className="w-3.5 h-3.5" />
               <span>TUKAR</span>
             </button>
           </div>
@@ -503,7 +539,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 aria-selected={activeTab === 'search'}
                 aria-label="Tab Carian Lagu"
                 onClick={() => setActiveTab('search')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono transition whitespace-nowrap border ${
+                className={`min-h-[44px] flex items-center gap-1.5 px-3.5 py-2 text-xs font-mono transition whitespace-nowrap border ${
                   activeTab === 'search'
                     ? 'bg-[#FF4D2E] text-[#0A0A0A] border-[#FF4D2E] font-bold'
                     : 'bg-[#151515] hover:bg-[#1E1E1E] text-[#A0A09C] hover:text-[#F5F3EE] border-[#2A2A2A]'
@@ -518,7 +554,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 aria-selected={activeTab === 'queue'}
                 aria-label="Tab Senarai Giliran"
                 onClick={() => setActiveTab('queue')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono transition whitespace-nowrap border ${
+                className={`min-h-[44px] flex items-center gap-1.5 px-3.5 py-2 text-xs font-mono transition whitespace-nowrap border ${
                   activeTab === 'queue'
                     ? 'bg-[#FF4D2E] text-[#0A0A0A] border-[#FF4D2E] font-bold'
                     : 'bg-[#151515] hover:bg-[#1E1E1E] text-[#A0A09C] hover:text-[#F5F3EE] border-[#2A2A2A]'
@@ -527,7 +563,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 <ListMusic className="w-3.5 h-3.5" />
                 <span>02 QUEUE</span>
                 {queue.length > 0 && (
-                  <span className={`px-1.5 py-0 text-[10px] font-mono ${
+                  <span className={`px-1.5 py-0.5 text-[10px] font-mono ${
                     activeTab === 'queue' ? 'bg-[#0A0A0A] text-[#FF4D2E]' : 'bg-[#222222] text-[#F5F3EE]'
                   }`}>
                     {queue.length}
@@ -540,7 +576,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 aria-selected={activeTab === 'chat'}
                 aria-label="Tab Sembang Bilik"
                 onClick={() => setActiveTab('chat')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono transition whitespace-nowrap border relative ${
+                className={`min-h-[44px] flex items-center gap-1.5 px-3.5 py-2 text-xs font-mono transition whitespace-nowrap border relative ${
                   activeTab === 'chat'
                     ? 'bg-[#FF4D2E] text-[#0A0A0A] border-[#FF4D2E] font-bold'
                     : 'bg-[#151515] hover:bg-[#1E1E1E] text-[#A0A09C] hover:text-[#F5F3EE] border-[#2A2A2A]'
@@ -549,11 +585,11 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 <MessageSquare className="w-3.5 h-3.5" />
                 <span>03 SEMBANG</span>
                 {unreadChatCount > 0 ? (
-                  <span className="px-1.5 py-0 text-[10px] font-mono font-bold bg-[#FF4D2E] text-[#0A0A0A] animate-pulse">
+                  <span className="px-1.5 py-0.5 text-[10px] font-mono font-bold bg-[#FF4D2E] text-[#0A0A0A] animate-pulse">
                     +{unreadChatCount}
                   </span>
                 ) : chatMessages.length > 0 ? (
-                  <span className={`px-1.5 py-0 text-[10px] font-mono ${
+                  <span className={`px-1.5 py-0.5 text-[10px] font-mono ${
                     activeTab === 'chat' ? 'bg-[#0A0A0A] text-[#FF4D2E]' : 'bg-[#222222] text-[#A0A09C]'
                   }`}>
                     {chatMessages.length}
@@ -566,7 +602,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 aria-selected={activeTab === 'participants'}
                 aria-label="Tab Senarai Pendengar"
                 onClick={() => setActiveTab('participants')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono transition whitespace-nowrap border ${
+                className={`min-h-[44px] flex items-center gap-1.5 px-3.5 py-2 text-xs font-mono transition whitespace-nowrap border ${
                   activeTab === 'participants'
                     ? 'bg-[#FF4D2E] text-[#0A0A0A] border-[#FF4D2E] font-bold'
                     : 'bg-[#151515] hover:bg-[#1E1E1E] text-[#A0A09C] hover:text-[#F5F3EE] border-[#2A2A2A]'
@@ -574,7 +610,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               >
                 <Users className="w-3.5 h-3.5" />
                 <span>04 PENDENGAR</span>
-                <span className={`px-1.5 py-0 text-[10px] font-mono ${
+                <span className={`px-1.5 py-0.5 text-[10px] font-mono ${
                   activeTab === 'participants' ? 'bg-[#0A0A0A] text-[#FF4D2E]' : 'bg-[#222222] text-[#A0A09C]'
                 }`}>
                   {participants.length}
@@ -586,7 +622,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                 aria-selected={activeTab === 'telemetry'}
                 aria-label="Tab Telemetri Enjin Sync"
                 onClick={() => setActiveTab('telemetry')}
-                className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono transition whitespace-nowrap border ${
+                className={`min-h-[44px] flex items-center gap-1.5 px-3.5 py-2 text-xs font-mono transition whitespace-nowrap border ${
                   activeTab === 'telemetry'
                     ? 'bg-[#FF4D2E] text-[#0A0A0A] border-[#FF4D2E] font-bold'
                     : 'bg-[#151515] hover:bg-[#1E1E1E] text-[#A0A09C] hover:text-[#F5F3EE] border-[#2A2A2A]'
@@ -705,7 +741,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
           onClick={() => setActiveTab('chat')}
           title="Buka sembang bilik masa nyata"
           aria-label="Buka sembang bilik masa nyata"
-          className="fixed bottom-6 right-6 z-30 flex items-center gap-2.5 px-4 py-3 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold text-xs font-mono shadow-xl transition-all duration-200 cursor-pointer"
+          className="fixed bottom-6 right-6 z-30 min-h-[44px] flex items-center gap-2.5 px-4 py-3 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold text-xs font-mono shadow-xl transition-all duration-200 cursor-pointer"
         >
           <MessageSquare className="w-4 h-4 fill-current" />
           <span>SEMBANG BILIK</span>

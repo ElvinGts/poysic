@@ -136,7 +136,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                   type="button"
                   onClick={() => handleUpdateAvatar(badge)}
                   aria-label={`Pilih lencana ${badge}`}
-                  className={`px-2 py-0.5 text-[10px] font-mono transition border ${
+                  className={`min-h-[44px] min-w-[44px] px-2.5 py-2 text-xs font-mono transition border flex items-center justify-center ${
                     selectedAvatar === badge
                       ? 'bg-[#FF4D2E] text-[#0A0A0A] border-[#FF4D2E] font-bold'
                       : 'bg-[#171717] text-[#A0A09C] border-[#2A2A2A] hover:text-[#F5F3EE] hover:border-[#444444]'
@@ -153,7 +153,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <button
               onClick={handleCreateInstantRoom}
               aria-label="Cipta bilik segera"
-              className="flex-1 flex items-center justify-center gap-2 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold py-3 px-5 text-sm tracking-wide transition transform active:translate-y-0.5"
+              className="min-h-[44px] flex-1 flex items-center justify-center gap-2 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold py-3 px-5 text-sm tracking-wide transition transform active:translate-y-0.5"
             >
               <Sparkles className="w-4 h-4 fill-current" />
               <span>CIPTA BILIK SEGERA</span>
@@ -162,7 +162,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <button
               onClick={() => setIsCreatingCustom(!isCreatingCustom)}
               aria-label="Cipta bilik dengan nama khas"
-              className="flex items-center justify-center gap-2 bg-[#141414] hover:bg-[#1A1A1A] text-[#F5F3EE] border border-[#2C2C2C] text-sm font-mono px-4 py-3 transition"
+              className="min-h-[44px] flex items-center justify-center gap-2 bg-[#141414] hover:bg-[#1A1A1A] text-[#F5F3EE] border border-[#2C2C2C] text-sm font-mono px-4 py-3 transition"
             >
               <SlidersHorizontal className="w-3.5 h-3.5 text-[#A0A09C]" />
               <span>NAMA KHAS</span>
@@ -187,7 +187,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <button
                 type="submit"
                 aria-label="Masuk ke bilik khas"
-                className="bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold px-4 py-2 text-xs tracking-wider"
+                className="min-h-[44px] bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold px-4 py-2 text-xs tracking-wider flex items-center justify-center"
               >
                 MASUK
               </button>
@@ -209,7 +209,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 type="submit"
                 disabled={!roomIdInput.trim()}
                 aria-label="Sertai bilik"
-                className="px-4 py-2.5 bg-[#1C1C1C] hover:bg-[#252525] disabled:opacity-40 text-[#A8E6CF] border border-[#2E2E2E] transition flex items-center gap-1.5 font-mono text-xs"
+                className="min-h-[44px] px-4 py-2.5 bg-[#1C1C1C] hover:bg-[#252525] disabled:opacity-40 text-[#A8E6CF] border border-[#2E2E2E] transition flex items-center gap-1.5 font-mono text-xs"
               >
                 <span>SERTAI</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -326,14 +326,14 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <button
               onClick={onOpenDocs}
               aria-label="Buka dokumentasi seni bina"
-              className="flex-1 py-2.5 px-3 border border-[#333333] hover:border-[#555555] text-xs font-mono text-[#F5F3EE] transition text-center"
+              className="min-h-[44px] flex-1 py-2.5 px-3 border border-[#333333] hover:border-[#555555] text-xs font-mono text-[#F5F3EE] transition flex items-center justify-center text-center"
             >
               DOKUMENTASI
             </button>
             <button
               onClick={onOpenDonation}
               aria-label="Sumbangan Saweria"
-              className="flex-1 py-2.5 px-3 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold text-xs font-mono transition text-center flex items-center justify-center gap-1.5"
+              className="min-h-[44px] flex-1 py-2.5 px-3 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold text-xs font-mono transition text-center flex items-center justify-center gap-1.5"
             >
               <Heart className="w-3 h-3 fill-current" />
               <span>SAWERIA</span>

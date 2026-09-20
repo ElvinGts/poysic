@@ -59,7 +59,7 @@ export const UserList: React.FC<UserListProps> = ({
         <button
           onClick={handleCopyLink}
           aria-label="Salin pautan jemputan bilik"
-          className="flex items-center gap-1.5 px-3 py-2 bg-[#171717] hover:bg-[#222222] text-[#A8E6CF] border border-[#2E2E2E] rounded-none text-xs font-mono font-bold transition shrink-0"
+          className="min-h-[44px] flex items-center gap-1.5 px-3 py-2 bg-[#171717] hover:bg-[#222222] text-[#A8E6CF] border border-[#2E2E2E] rounded-none text-xs font-mono font-bold transition shrink-0"
         >
           {copied ? <Check className="w-3.5 h-3.5 text-[#A8E6CF]" /> : <Copy className="w-3.5 h-3.5" />}
           <span>{copied ? 'PAUTAN DISALIN' : 'JEMPUT RAKAN'}</span>
@@ -135,7 +135,7 @@ export const UserList: React.FC<UserListProps> = ({
                     onClick={onEditUsername}
                     title="Tukar nama panggilan atau avatar anda"
                     aria-label="Tukar nama panggilan atau avatar anda"
-                    className="flex items-center gap-1 text-xs font-mono text-[#A0A09C] hover:text-[#F5F3EE] bg-[#171717] hover:bg-[#222222] px-2.5 py-1.5 rounded-none border border-[#2E2E2E] transition shrink-0 ml-2"
+                    className="min-h-[44px] flex items-center gap-1 text-xs font-mono text-[#A0A09C] hover:text-[#F5F3EE] bg-[#171717] hover:bg-[#222222] px-3 py-1.5 rounded-none border border-[#2E2E2E] transition shrink-0 ml-2"
                   >
                     <Edit3 className="w-3 h-3" />
                     <span className="text-[11px] hidden sm:inline">TUKAR</span>

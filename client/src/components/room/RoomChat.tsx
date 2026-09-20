@@ -81,7 +81,7 @@ export const RoomChat: React.FC<RoomChatProps> = ({
               onClick={() => onSendReaction(r.emoji)}
               title={r.label}
               aria-label={`Hantar reaksi emoji ${r.label}`}
-              className="px-2 py-1 bg-[#171717] hover:bg-[#222222] border border-[#2A2A2A] active:scale-125 rounded-none text-sm transition transform shrink-0"
+              className="min-h-[44px] min-w-[44px] p-2 bg-[#171717] hover:bg-[#222222] border border-[#2A2A2A] active:scale-125 rounded-none text-base transition transform shrink-0 flex items-center justify-center"
             >
               {r.emoji}
             </button>
@@ -163,7 +163,7 @@ export const RoomChat: React.FC<RoomChatProps> = ({
           type="submit"
           disabled={!inputText.trim()}
           aria-label="Hantar mesej"
-          className="bg-[#FF4D2E] hover:bg-[#ff6145] disabled:opacity-40 text-[#0A0A0A] px-3.5 py-2 rounded-none transition flex items-center justify-center font-bold"
+          className="min-h-[44px] min-w-[44px] bg-[#FF4D2E] hover:bg-[#ff6145] disabled:opacity-40 text-[#0A0A0A] px-3.5 py-2 rounded-none transition flex items-center justify-center font-bold"
         >
           <Send className="w-3.5 h-3.5" />
         </button>

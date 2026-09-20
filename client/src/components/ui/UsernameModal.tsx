@@ -112,7 +112,7 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
             <button
               onClick={onClose}
               aria-label="Tutup dialog nama pengguna"
-              className="p-1.5 text-[#8E8E8A] hover:text-[#F5F3EE] rounded-none hover:bg-[#1A1A1A] transition"
+              className="min-h-[44px] min-w-[44px] p-2 text-[#8E8E8A] hover:text-[#F5F3EE] rounded-none hover:bg-[#1A1A1A] transition flex items-center justify-center"
             >
               <X className="w-4 h-4" />
             </button>
@@ -142,7 +142,7 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
               onClick={handleRandomize}
               title="Jana nama dan avatar rawak"
               aria-label="Jana nama dan avatar rawak"
-              className="flex items-center gap-1 text-xs text-[#8E8E8A] hover:text-[#FF4D2E] bg-[#141414] border border-[#262626] hover:border-[#383838] px-2.5 py-2 rounded-none transition font-mono"
+              className="min-h-[44px] flex items-center gap-1.5 text-xs text-[#8E8E8A] hover:text-[#FF4D2E] bg-[#141414] border border-[#262626] hover:border-[#383838] px-3 py-2 rounded-none transition font-mono"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span className="text-[11px]">RAWAK</span>
@@ -189,7 +189,7 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
                   type="button"
                   onClick={() => setAvatar(av)}
                   aria-label={`Pilih avatar ${av}`}
-                  className={`text-xl p-2 rounded-none transition flex items-center justify-center border ${
+                  className={`min-h-[44px] min-w-[44px] text-xl p-2 rounded-none transition flex items-center justify-center border ${
                     avatar === av
                       ? 'bg-[#1C120C] border-[#FF4D2E] scale-105 shadow'
                       : 'hover:bg-[#1A1A1A] border-transparent'
@@ -208,7 +208,7 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
                 type="button"
                 onClick={onClose}
                 aria-label="Batal pemilihan profil"
-                className="flex-1 px-4 py-2.5 bg-[#171717] hover:bg-[#222222] text-[#A0A09C] hover:text-[#F5F3EE] rounded-none font-bold text-xs font-mono border border-[#2E2E2E] transition"
+                className="min-h-[44px] flex-1 px-4 py-2.5 bg-[#171717] hover:bg-[#222222] text-[#A0A09C] hover:text-[#F5F3EE] rounded-none font-bold text-xs font-mono border border-[#2E2E2E] transition flex items-center justify-center"
               >
                 {isJoining ? 'BATAL' : 'TUTUP'}
               </button>
@@ -216,7 +216,7 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
             <button
               type="submit"
               aria-label={isJoining ? 'Sertai bilik sekarang' : 'Simpan perubahan profil'}
-              className="flex-1 px-4 py-2.5 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none font-bold text-xs font-mono shadow-lg transition flex items-center justify-center gap-1.5"
+              className="min-h-[44px] flex-1 px-4 py-2.5 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none font-bold text-xs font-mono shadow-lg transition flex items-center justify-center gap-1.5"
             >
               <Check className="w-4 h-4" />
               <span>{isJoining ? 'SERTAI BILIK SEKARANG' : 'SIMPAN PERUBAHAN'}</span>

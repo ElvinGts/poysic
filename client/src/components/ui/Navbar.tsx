@@ -90,7 +90,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={handleCopyLink}
               title="Salin pautan bilik"
               aria-label="Salin pautan bilik"
-              className="p-1 hover:bg-[#202020] text-[#A0A09C] hover:text-[#F5F3EE] transition flex items-center gap-1"
+              className="min-h-[44px] min-w-[44px] p-1.5 hover:bg-[#202020] text-[#A0A09C] hover:text-[#F5F3EE] transition flex items-center justify-center gap-1"
             >
               {copied ? <Check className="w-3.5 h-3.5 text-[#A8E6CF]" /> : <Copy className="w-3.5 h-3.5" />}
               <span className="hidden lg:inline text-[10px]">{copied ? 'DISALIN' : 'SALIN'}</span>
@@ -109,7 +109,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Status Sambungan & Ping */}
             <button
               type="button"
-              className="hidden md:flex items-center gap-1.5 cursor-pointer hover:opacity-80 bg-transparent border-0 p-0"
+              className="hidden md:flex items-center gap-1.5 cursor-pointer hover:opacity-80 bg-transparent border-0 min-h-[44px] px-2"
               onClick={onForceSync}
               aria-label={`Latensi: ${Math.round(syncStats.latency)}ms, Offset: ${Math.round(syncStats.offset)}ms. Klik untuk paksa sync.`}
               title={`Latensi: ${Math.round(syncStats.latency)}ms | Offset: ${Math.round(syncStats.offset)}ms. Klik untuk paksa sync.`}
@@ -133,7 +133,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={onChangeUsername}
               title="Tukar profil nama anda"
               aria-label="Tukar profil nama anda"
-              className="flex items-center gap-2 px-2.5 py-1.5 bg-[#141414] hover:bg-[#1E1E1E] border border-[#2A2A2A] text-xs font-mono text-[#F5F3EE] transition"
+              className="min-h-[44px] flex items-center gap-2 px-3 py-1.5 bg-[#141414] hover:bg-[#1E1E1E] border border-[#2A2A2A] text-xs font-mono text-[#F5F3EE] transition"
             >
               <span className="px-1 bg-[#222222] text-[#FF4D2E] text-[10px] font-bold">{avatar || 'LP'}</span>
               <span className="font-bold text-[#F5F3EE] max-w-[90px] truncate hidden sm:inline">
@@ -147,7 +147,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={onForceSync}
               title="Paksa Sinkronisasi Jam (Cristian's Sync)"
               aria-label="Paksa sinkronisasi jam"
-              className="p-2 text-[#A0A09C] hover:text-[#A8E6CF] hover:bg-[#1A1A1A] border border-transparent hover:border-[#2E2E2E] transition"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 text-[#A0A09C] hover:text-[#A8E6CF] hover:bg-[#1A1A1A] border border-transparent hover:border-[#2E2E2E] transition"
             >
               <RefreshCw className="w-4 h-4" />
             </button>
@@ -157,7 +157,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={onOpenDocs}
             title="Dokumentasi Arkitektur & Enjin Sync"
             aria-label="Buka dokumentasi arkitektur dan enjin sync"
-            className="flex items-center gap-1.5 text-xs font-mono text-[#A0A09C] hover:text-[#F5F3EE] bg-[#141414] hover:bg-[#1C1C1C] border border-[#2A2A2A] px-3 py-1.5 transition"
+            className="min-h-[44px] flex items-center gap-1.5 text-xs font-mono text-[#A0A09C] hover:text-[#F5F3EE] bg-[#141414] hover:bg-[#1C1C1C] border border-[#2A2A2A] px-3.5 py-1.5 transition"
           >
             <BookOpen className="w-3.5 h-3.5 text-[#A0A09C]" />
             <span className="hidden sm:inline">DOKS</span>
@@ -166,7 +166,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             onClick={onOpenDonation}
             aria-label="Sumbangan Saweria untuk sokong PoySic"
-            className="flex items-center gap-1.5 text-xs font-mono font-bold bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] px-3 py-1.5 transition"
+            className="min-h-[44px] flex items-center gap-1.5 text-xs font-mono font-bold bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] px-3.5 py-1.5 transition"
           >
             <Heart className="w-3.5 h-3.5 fill-current" />
             <span className="hidden sm:inline">SAWERIA</span>
@@ -177,7 +177,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               onClick={onLeaveRoom}
               title="Keluar dari bilik"
               aria-label="Keluar dari bilik"
-              className="p-2 text-[#A0A09C] hover:text-[#FF4D2E] hover:bg-[#2A1412] border border-[#2E2E2E] transition ml-1"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 text-[#A0A09C] hover:text-[#FF4D2E] hover:bg-[#2A1412] border border-[#2E2E2E] transition ml-1"
             >
               <LogOut className="w-4 h-4" />
             </button>

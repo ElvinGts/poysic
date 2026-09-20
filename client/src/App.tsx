@@ -36,6 +36,8 @@ export default function App() {
   const [queue, setQueue] = useState<Track[]>(CURATED_TRACKS.slice(1, 4));
   const [volume, setVolume] = useState<number>(0.85);
   const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [isBuffering, setIsBuffering] = useState<boolean>(false);
+  const [audioError, setAudioError] = useState<string | null>(null);
 
   // Komunikasi & Reaksi
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
@@ -122,6 +124,8 @@ export default function App() {
         setDuration(state.duration);
       }
       setIsPlaying(state.isPlaying);
+      setIsBuffering(state.isBuffering);
+      setAudioError(state.error);
     });
 
     // Listener sekatan autoplay pelayar
@@ -505,6 +509,10 @@ export default function App() {
     }
   };
 
+  const handleRetryAudio = () => {
+    audioRef.current?.retryPlayback();
+  };
+
   const handleSelectTrack = (track: Track) => {
     if (!isHostRef.current && roomId) {
       handleAddToQueue(track);
@@ -700,7 +708,10 @@ export default function App() {
             currentUserId={socket.id || 'me'}
             syncedAudio={audioRef.current}
             isAutoplayBlocked={isAutoplayBlocked}
+            isBuffering={isBuffering}
+            audioError={audioError}
             onResumeAudio={handleResumeAudio}
+            onRetryAudio={handleRetryAudio}
             onPlay={handlePlay}
             onPause={handlePause}
             onSeek={handleSeek}
