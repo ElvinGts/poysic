@@ -1,6 +1,6 @@
 /**
  * client/src/components/ui/TrackSearch.tsx
- * Tujuan: Komponen carian lagu Jamendo berlesen Creative Commons dengan penapis genre pantas.
+ * Tujuan: Komponen carian lagu Jamendo CC & Audius dengan penapis sumber dan genre pantas.
  */
 import React, { useState } from 'react';
 import { Search, Play, Plus, Loader2, Disc, ExternalLink } from 'lucide-react';
@@ -12,7 +12,7 @@ interface TrackSearchProps {
   currentTrackId?: string;
   onPlayTrack: (track: Track) => void;
   onAddToQueue: (track: Track) => void;
-  onSearchJamendo: (query: string) => Promise<Track[]>;
+  onSearchJamendo: (query: string, source?: 'all' | 'jamendo' | 'audius') => Promise<Track[]>;
 }
 
 export const TrackSearch: React.FC<TrackSearchProps> = ({
@@ -23,6 +23,7 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
 }) => {
   const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSource, setSelectedSource] = useState<'all' | 'jamendo' | 'audius'>('all');
   const [selectedGenre, setSelectedGenre] = useState('Semua');
   const [searchResults, setSearchResults] = useState<Track[]>(CURATED_TRACKS);
   const [isSearching, setIsSearching] = useState(false);
@@ -47,12 +48,27 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
 
     setIsSearching(true);
     try {
-      const results = await onSearchJamendo(searchQuery.trim());
+      const results = await onSearchJamendo(searchQuery.trim(), selectedSource);
       setSearchResults(results);
     } catch (err) {
-      console.warn('Carian gagal:', err);
+      console.warn('Search failed:', err);
     } finally {
       setIsSearching(false);
+    }
+  };
+
+  const handleSourceChange = async (newSource: 'all' | 'jamendo' | 'audius') => {
+    setSelectedSource(newSource);
+    if (searchQuery.trim()) {
+      setIsSearching(true);
+      try {
+        const results = await onSearchJamendo(searchQuery.trim(), newSource);
+        setSearchResults(results);
+      } catch (err) {
+        console.warn('Search failed:', err);
+      } finally {
+        setIsSearching(false);
+      }
     }
   };
 
@@ -71,8 +87,8 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full gap-4">
-      {/* Borang Carian Jamendo */}
+    <div className="flex flex-col h-full gap-4 font-sans">
+      {/* Borang Carian */}
       <form onSubmit={handleSearchSubmit} className="flex gap-2">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8E8E8A]" />
@@ -95,6 +111,49 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
           <span className="hidden sm:inline">{t('search.searchBtn')}</span>
         </button>
       </form>
+
+      {/* Bar Pemilih Sumber Muzik (All / Jamendo CC / Audius) */}
+      <div className="flex items-center gap-1.5 border-b border-[#1C1C1C] pb-2 overflow-x-auto">
+        <span className="text-[10px] font-mono text-[#8E8E8A] uppercase mr-1 flex-shrink-0">
+          SOURCE:
+        </span>
+        <button
+          type="button"
+          onClick={() => handleSourceChange('all')}
+          aria-label={t('search.sourceAll')}
+          className={`min-h-[44px] px-3 py-1 text-xs font-mono rounded-none whitespace-nowrap transition border flex items-center justify-center ${
+            selectedSource === 'all'
+              ? 'bg-[#FF4D2E] text-[#0A0A0A] border-[#FF4D2E] font-bold'
+              : 'bg-[#141414] hover:bg-[#1C1C1C] text-[#8E8E8A] hover:text-[#F5F3EE] border-[#262626]'
+          }`}
+        >
+          {t('search.sourceAll')}
+        </button>
+        <button
+          type="button"
+          onClick={() => handleSourceChange('jamendo')}
+          aria-label={t('search.sourceJamendo')}
+          className={`min-h-[44px] px-3 py-1 text-xs font-mono rounded-none whitespace-nowrap transition border flex items-center justify-center ${
+            selectedSource === 'jamendo'
+              ? 'bg-[#A8E6CF] text-[#0A0A0A] border-[#A8E6CF] font-bold'
+              : 'bg-[#141414] hover:bg-[#1C1C1C] text-[#8E8E8A] hover:text-[#F5F3EE] border-[#262626]'
+          }`}
+        >
+          {t('search.sourceJamendo')}
+        </button>
+        <button
+          type="button"
+          onClick={() => handleSourceChange('audius')}
+          aria-label={t('search.sourceAudius')}
+          className={`min-h-[44px] px-3 py-1 text-xs font-mono rounded-none whitespace-nowrap transition border flex items-center justify-center ${
+            selectedSource === 'audius'
+              ? 'bg-[#D8B4FE] text-[#0A0A0A] border-[#D8B4FE] font-bold'
+              : 'bg-[#141414] hover:bg-[#1C1C1C] text-[#8E8E8A] hover:text-[#F5F3EE] border-[#262626]'
+          }`}
+        >
+          {t('search.sourceAudius')}
+        </button>
+      </div>
 
       {/* Bar Kategori Genre */}
       <div className="flex items-center gap-1.5 overflow-x-auto pb-1">
@@ -132,6 +191,7 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
           searchResults.map((track) => {
             const isCurrent = currentTrackId === track.id;
             const isJustAdded = addedTrackId === track.id;
+            const isAudius = track.source === 'audius' || track.id.startsWith('audius-');
 
             return (
               <div
@@ -165,8 +225,17 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
                       }`}>
                         {track.name}
                       </h4>
+                      {isAudius ? (
+                        <span className="hidden sm:inline-block text-[9px] uppercase font-mono px-1.5 py-0.5 rounded-none bg-[#1F142B] text-[#D8B4FE] border border-[#7C3AED]/40">
+                          Audius
+                        </span>
+                      ) : (
+                        <span className="hidden sm:inline-block text-[9px] uppercase font-mono px-1.5 py-0.5 rounded-none bg-[#11241C] text-[#A8E6CF] border border-[#10B981]/40">
+                          Jamendo CC
+                        </span>
+                      )}
                       {track.genre && (
-                        <span className="hidden sm:inline-block text-[10px] uppercase font-mono px-1.5 py-0.5 rounded-none bg-[#1A1A1A] text-[#A8E6CF] border border-[#2A2A2A]">
+                        <span className="hidden sm:inline-block text-[9px] uppercase font-mono px-1.5 py-0.5 rounded-none bg-[#1A1A1A] text-[#8E8E8A] border border-[#2A2A2A]">
                           {track.genre}
                         </span>
                       )}
@@ -216,15 +285,27 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
 
       <div className="text-[11px] font-mono text-[#8E8E8A] flex items-center justify-between border-t border-[#222222] pt-2">
         <span>{t('search.license')}</span>
-        <a
-          href="https://www.jamendo.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[#A8E6CF] hover:underline flex items-center gap-1"
-        >
-          <span>Jamendo</span>
-          <ExternalLink className="w-3 h-3" />
-        </a>
+        <div className="flex items-center gap-3">
+          <a
+            href="https://www.jamendo.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#A8E6CF] hover:underline flex items-center gap-1"
+          >
+            <span>Jamendo</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
+          <span>&bull;</span>
+          <a
+            href="https://audius.co"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#D8B4FE] hover:underline flex items-center gap-1"
+          >
+            <span>Audius</span>
+            <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
       </div>
     </div>
   );

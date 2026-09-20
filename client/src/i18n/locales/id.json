@@ -83,16 +83,19 @@
     "audioErrorDefault": "Gagal memuat trek audio. Silakan coba lagi."
   },
   "search": {
-    "placeholder": "Cari trek Jamendo CC (cth: lofi, chill, acoustic, jazz)...",
+    "placeholder": "Cari trek musik di Jamendo CC & Audius...",
     "searchBtn": "CARI",
     "genreAll": "Semua",
-    "noTracks": "Tidak ada trek ditemukan untuk pencarian tersebut.",
+    "sourceAll": "SEMUA SUMBER",
+    "sourceJamendo": "JAMENDO CC",
+    "sourceAudius": "AUDIUS",
+    "noTracks": "Tidak ada lagu ditemukan untuk pencarian tersebut.",
     "backToPopular": "Kembali ke rekomendasi populer",
-    "queueBtn": "GILIRAN",
+    "queueBtn": "ANTREAN",
     "addedBtn": "DITAMBAHKAN",
-    "playNow": "Putar Sekarang di Ruang",
-    "license": "Lisensi Creative Commons (CC BY) Jamendo.",
-    "suggestedTrack": "Anda menyarankan \"{{track}}\" ke antrean ruang."
+    "playNow": "Putar Sekarang di Ruangan",
+    "license": "Audio Berlisensi Jamendo CC & Terdesentralisasi Audius.",
+    "suggestedTrack": "Anda telah menyarankan \"{{track}}\" ke antrean lagu ruangan."
   },
   "queue": {
     "title": "Daftar Giliran ({{count}})",

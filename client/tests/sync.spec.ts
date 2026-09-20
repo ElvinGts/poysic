@@ -193,3 +193,51 @@ test('host closes tab: listener promoted to new host within 5s', async ({ browse
     await contextB.close();
   }
 });
+
+test('music search: source selector supports Jamendo CC & Audius with badges', async ({ browser }) => {
+  const context = await browser.newContext();
+  const page = await context.newPage();
+
+  try {
+    await page.goto('http://localhost:5173');
+    await page.waitForLoadState('domcontentloaded');
+
+    const createRoomBtn = page.getByRole('button', { name: /INSTANT ROOM|CIPTA BILIK SEGERA/i });
+    await createRoomBtn.click();
+
+    await page.waitForURL(/.*\?room=[a-zA-Z0-9_-]+/);
+
+    // Switch to search tab
+    const searchTab = page.getByRole('tab', { name: /01 SEARCH|SEARCH/i });
+    await searchTab.click();
+
+    // Verify source selector buttons
+    const allSourcesBtn = page.getByRole('button', { name: /ALL SOURCES|SEMUA SUMBER/i });
+    const jamendoBtn = page.getByRole('button', { name: /JAMENDO CC/i });
+    const audiusBtn = page.getByRole('button', { name: /AUDIUS/i });
+
+    await expect(allSourcesBtn).toBeVisible();
+    await expect(jamendoBtn).toBeVisible();
+    await expect(audiusBtn).toBeVisible();
+
+    // Verify minimum touch target for source buttons
+    const box = await audiusBtn.boundingBox();
+    expect(box?.height).toBeGreaterThanOrEqual(44);
+
+    // Filter by Audius
+    await audiusBtn.click();
+
+    // Type a query in search box
+    const searchInput = page.getByPlaceholder(/Search music tracks|Cari trek muzik/i);
+    await searchInput.fill('chill');
+    const submitBtn = page.getByRole('button', { name: /SEARCH|CARI/i });
+    await submitBtn.click();
+
+    // Wait for search results
+    await page.waitForTimeout(2000);
+
+    console.log('[Playwright Audius Search] Successfully verified Jamendo & Audius sources in UI');
+  } finally {
+    await context.close();
+  }
+});

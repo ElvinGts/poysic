@@ -121,7 +121,8 @@ export async function searchJamendoTracks(query: string): Promise<Track[]> {
           image: t.image || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=400&auto=format&fit=crop&q=80',
           audio: t.audio,
           license_ccurl: t.license_ccurl || 'https://creativecommons.org/licenses/by/3.0/',
-          genre: t.musicinfo?.tags?.genres?.[0] || 'Music'
+          genre: t.musicinfo?.tags?.genres?.[0] || 'Music',
+          source: 'jamendo' as const,
         }));
     }
   } catch (err) {

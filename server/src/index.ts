@@ -34,6 +34,7 @@ import {
   UpdateProfilePayload,
 } from './types';
 import { getCuratedTracks, searchJamendoTracks } from './jamendo';
+import { searchAudiusTracks } from './audius';
 import { RoomManager } from './rooms';
 import { addToQueue, clearQueue, removeFromQueue } from './queue';
 import { handleClockPing, sanitizePosition, startHeartbeatService } from './clockSync';
@@ -124,15 +125,44 @@ app.get('/api/health', (_req: Request, res: Response<HealthResponse>) => {
   });
 });
 
-// Search Jamendo Creative Commons music
+// Search music tracks from Jamendo CC and/or Audius API
 app.get('/api/tracks/search', async (req: Request, res: Response<TracksResponse>) => {
   try {
     const q = sanitizeSearchQuery(req.query.q);
+    const source = typeof req.query.source === 'string' ? req.query.source.toLowerCase() : 'all';
+
     if (!q) {
       return res.json({ results: getCuratedTracks() });
     }
-    const results = await searchJamendoTracks(q);
-    return res.json({ results });
+
+    if (source === 'audius') {
+      const audiusResults = await searchAudiusTracks(q);
+      return res.json({ results: audiusResults.length > 0 ? audiusResults : getCuratedTracks() });
+    }
+
+    if (source === 'jamendo') {
+      const jamendoResults = await searchJamendoTracks(q);
+      return res.json({ results: jamendoResults });
+    }
+
+    // Default 'all': query both in parallel
+    const [jamendoSettled, audiusSettled] = await Promise.allSettled([
+      searchJamendoTracks(q),
+      searchAudiusTracks(q, 10),
+    ]);
+
+    const jamendoTracks = jamendoSettled.status === 'fulfilled' ? jamendoSettled.value : [];
+    const audiusTracks = audiusSettled.status === 'fulfilled' ? audiusSettled.value : [];
+
+    // Interleave results to provide a rich discovery experience
+    const combined: Track[] = [];
+    const maxLen = Math.max(jamendoTracks.length, audiusTracks.length);
+    for (let i = 0; i < maxLen; i++) {
+      if (i < jamendoTracks.length) combined.push(jamendoTracks[i]);
+      if (i < audiusTracks.length) combined.push(audiusTracks[i]);
+    }
+
+    return res.json({ results: combined.length > 0 ? combined : getCuratedTracks() });
   } catch (err) {
     console.error('[PoySic API] Search error fallback:', err);
     return res.json({ results: getCuratedTracks() });
@@ -176,13 +206,47 @@ io.on('connection', (socket: Socket) => {
     handleClockPing(clientTimestamp, callback);
   });
 
-  // 2. Track Search via WebSocket
+  // 2. Track Search via WebSocket (supports Jamendo and Audius)
   socket.on('tracks:search', async (query: unknown, callback: (tracks: Track[]) => void) => {
     try {
-      const q = typeof query === 'string' ? query : '';
-      const results = await searchJamendoTracks(q);
+      let q = '';
+      let source = 'all';
+      if (typeof query === 'string') {
+        q = query;
+      } else if (isObject(query) && typeof (query as any).query === 'string') {
+        q = (query as any).query;
+        if (typeof (query as any).source === 'string') {
+          source = (query as any).source.toLowerCase();
+        }
+      }
+
+      if (source === 'audius') {
+        const audiusResults = await searchAudiusTracks(q);
+        if (typeof callback === 'function') callback(audiusResults);
+        return;
+      }
+      if (source === 'jamendo') {
+        const jamendoResults = await searchJamendoTracks(q);
+        if (typeof callback === 'function') callback(jamendoResults);
+        return;
+      }
+
+      const [jamendoSettled, audiusSettled] = await Promise.allSettled([
+        searchJamendoTracks(q),
+        searchAudiusTracks(q, 10),
+      ]);
+      const jamendoTracks = jamendoSettled.status === 'fulfilled' ? jamendoSettled.value : [];
+      const audiusTracks = audiusSettled.status === 'fulfilled' ? audiusSettled.value : [];
+
+      const combined: Track[] = [];
+      const maxLen = Math.max(jamendoTracks.length, audiusTracks.length);
+      for (let i = 0; i < maxLen; i++) {
+        if (i < jamendoTracks.length) combined.push(jamendoTracks[i]);
+        if (i < audiusTracks.length) combined.push(audiusTracks[i]);
+      }
+
       if (typeof callback === 'function') {
-        callback(results);
+        callback(combined.length > 0 ? combined : getCuratedTracks());
       }
     } catch (err) {
       if (typeof callback === 'function') {

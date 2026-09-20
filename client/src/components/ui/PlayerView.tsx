@@ -66,7 +66,7 @@ interface PlayerViewProps {
   onAddToQueue: (track: Track) => void;
   onRemoveFromQueue: (trackId: string) => void;
   onClearQueue: () => void;
-  onSearchJamendo: (q: string) => Promise<Track[]>;
+  onSearchJamendo: (q: string, source?: 'all' | 'jamendo' | 'audius') => Promise<Track[]>;
   onForceSync: () => void;
   onSendMessage: (text: string) => void;
   onSendReaction: (emoji: string) => void;

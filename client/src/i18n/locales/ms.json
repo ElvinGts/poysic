@@ -83,15 +83,18 @@
     "audioErrorDefault": "Ralat memuatkan trek audio. Sila cuba lagi."
   },
   "search": {
-    "placeholder": "Cari trek Jamendo CC (cth: lofi, chill, acoustic, jazz)...",
+    "placeholder": "Cari trek muzik merentasi Jamendo CC & Audius...",
     "searchBtn": "CARI",
     "genreAll": "Semua",
-    "noTracks": "Tiada trek ditemui untuk carian tersebut.",
-    "backToPopular": "Kembali ke senarai pilihan popular",
-    "queueBtn": "QUEUE",
+    "sourceAll": "SEMUA SUMBER",
+    "sourceJamendo": "JAMENDO CC",
+    "sourceAudius": "AUDIUS",
+    "noTracks": "Tiada lagu ditemui untuk carian tersebut.",
+    "backToPopular": "Kembali ke cadangan popular",
+    "queueBtn": "GILIRAN",
     "addedBtn": "DITAMBAH",
     "playNow": "Mainkan Sekarang dalam Bilik",
-    "license": "Lesen Jamendo Creative Commons (CC BY).",
+    "license": "Audio Berlesen Jamendo CC & Terdesentralisasi Audius.",
     "suggestedTrack": "Anda telah mencadangkan \"{{track}}\" ke giliran lagu bilik."
   },
   "queue": {

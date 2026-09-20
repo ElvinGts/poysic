@@ -83,15 +83,18 @@
     "audioErrorDefault": "Failed to load audio track. Please try again."
   },
   "search": {
-    "placeholder": "Search Jamendo CC tracks (e.g. lofi, chill, acoustic, jazz)...",
+    "placeholder": "Search music tracks across Jamendo CC & Audius...",
     "searchBtn": "SEARCH",
     "genreAll": "All",
-    "noTracks": "No tracks found for that search.",
-    "backToPopular": "Back to popular recommendations",
+    "sourceAll": "ALL SOURCES",
+    "sourceJamendo": "JAMENDO CC",
+    "sourceAudius": "AUDIUS",
+    "noTracks": "No tracks found for this keyword.",
+    "backToPopular": "Back to Popular Tracks",
     "queueBtn": "QUEUE",
     "addedBtn": "ADDED",
-    "playNow": "Play Now in Room",
-    "license": "Jamendo Creative Commons (CC BY) License.",
+    "playNow": "Play Now",
+    "license": "Jamendo CC & Audius Decentralized Audio.",
     "suggestedTrack": "You suggested \"{{track}}\" to the room queue."
   },
   "queue": {

@@ -644,10 +644,10 @@ export default function App() {
     }
   };
 
-  const handleSearchJamendo = useCallback(async (query: string): Promise<Track[]> => {
+  const handleSearchJamendo = useCallback(async (query: string, source: 'all' | 'jamendo' | 'audius' = 'all'): Promise<Track[]> => {
     try {
       const apiBase = import.meta.env.VITE_SOCKET_URL || '';
-      const res = await fetch(`${apiBase}/api/tracks/search?q=${encodeURIComponent(query)}`);
+      const res = await fetch(`${apiBase}/api/tracks/search?q=${encodeURIComponent(query)}&source=${source}`);
       if (res.ok) {
         const data = await res.json();
         if (data && data.results) {
@@ -659,7 +659,7 @@ export default function App() {
     }
 
     return new Promise((resolve) => {
-      socket.emit('tracks:search', query, (results: Track[]) => {
+      socket.emit('tracks:search', { query, source }, (results: Track[]) => {
         resolve(results && results.length > 0 ? results : CURATED_TRACKS);
       });
     });

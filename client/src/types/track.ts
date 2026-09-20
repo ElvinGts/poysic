@@ -13,4 +13,5 @@ export interface Track {
   audio: string;
   license_ccurl?: string;
   genre?: string;
+  source?: 'jamendo' | 'audius';
 }

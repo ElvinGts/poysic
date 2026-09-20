@@ -83,16 +83,19 @@
     "audioErrorDefault": "Error al cargar la pista de audio. Por favor, inténtalo de nuevo."
   },
   "search": {
-    "placeholder": "Buscar pistas CC de Jamendo (ej. lofi, chill, acoustic, jazz)...",
+    "placeholder": "Buscar pistas de música en Jamendo CC y Audius...",
     "searchBtn": "BUSCAR",
     "genreAll": "Todo",
+    "sourceAll": "TODAS LAS FUENTES",
+    "sourceJamendo": "JAMENDO CC",
+    "sourceAudius": "AUDIUS",
     "noTracks": "No se encontraron pistas para esa búsqueda.",
     "backToPopular": "Volver a recomendaciones populares",
     "queueBtn": "COLA",
     "addedBtn": "AÑADIDO",
-    "playNow": "Reproducir Ahora en la Sala",
-    "license": "Licencia Creative Commons (CC BY) de Jamendo.",
-    "suggestedTrack": "Sugeriste \"{{track}}\" a la cola de la sala."
+    "playNow": "Reproducir ahora en la sala",
+    "license": "Audio con licencia Jamendo CC y descentralizado Audius.",
+    "suggestedTrack": "Has sugerido \"{{track}}\" a la cola de la sala."
   },
   "queue": {
     "title": "Lista de Cola ({{count}})",

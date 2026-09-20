@@ -83,16 +83,19 @@
     "audioErrorDefault": "音频加载失败，请重试。"
   },
   "search": {
-    "placeholder": "搜索 Jamendo CC 音乐 (例: lofi, chill, acoustic, jazz)...",
+    "placeholder": "跨 Jamendo CC 与 Audius 搜索音乐...",
     "searchBtn": "搜索",
     "genreAll": "全部",
-    "noTracks": "未找到符合条件的曲目。",
+    "sourceAll": "所有音源",
+    "sourceJamendo": "JAMENDO CC",
+    "sourceAudius": "AUDIUS",
+    "noTracks": "未找到相关音乐。",
     "backToPopular": "返回热门推荐",
     "queueBtn": "加入队列",
     "addedBtn": "已添加",
-    "playNow": "在房间立即播放",
-    "license": "Jamendo 知识共享 (CC BY) 授权。",
-    "suggestedTrack": "你已将 \"{{track}}\" 推荐至房间播放队列。"
+    "playNow": "立即播放",
+    "license": "Jamendo CC 授权与 Audius 去中心化音频。",
+    "suggestedTrack": "您已向房间队列推荐了 “{{track}}”。"
   },
   "queue": {
     "title": "播放队列 ({{count}})",
