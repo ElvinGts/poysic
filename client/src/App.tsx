@@ -11,10 +11,18 @@ import { Track, Participant, SyncStats, ChatMessage, ReactionEvent, RoomState } 
 import { CURATED_TRACKS } from './data/curatedTracks';
 import { Navbar } from './components/ui/Navbar';
 import { LandingView } from './components/ui/LandingView';
-import { PlayerView } from './components/ui/PlayerView';
-import { DocsModal } from './components/ui/DocsModal';
-import { DonationModal } from './components/ui/DonationModal';
-import { UsernameModal } from './components/ui/UsernameModal';
+const PlayerView = React.lazy(() =>
+  import('./components/ui/PlayerView').then((m) => ({ default: m.PlayerView }))
+);
+const DocsModal = React.lazy(() =>
+  import('./components/ui/DocsModal').then((m) => ({ default: m.DocsModal }))
+);
+const DonationModal = React.lazy(() =>
+  import('./components/ui/DonationModal').then((m) => ({ default: m.DonationModal }))
+);
+const UsernameModal = React.lazy(() =>
+  import('./components/ui/UsernameModal').then((m) => ({ default: m.UsernameModal }))
+);
 
 export default function App() {
   const { t } = useTranslation();
