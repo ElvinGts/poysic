@@ -3,6 +3,7 @@
  * Tujuan: Komponen aplikasi utama PoySic yang menghubungkan Socket.IO, ClockSync, SyncedAudio, dan antara muka pengguna modular.
  */
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { socket } from './lib/socket';
 import { ClockSync } from './lib/sync';
 import { SyncedAudio } from './lib/audio';
@@ -16,10 +17,11 @@ import { DonationModal } from './components/ui/DonationModal';
 import { UsernameModal } from './components/ui/UsernameModal';
 
 export default function App() {
+  const { t } = useTranslation();
   // Maklumat bilik & pengguna
   const [roomId, setRoomId] = useState<string | null>(null);
   const [username, setUsername] = useState<string>(() => {
-    return localStorage.getItem('poysic_username') || 'Pendengar PoySic';
+    return localStorage.getItem('poysic_username') || 'Listener';
   });
   const [avatar, setAvatar] = useState<string>(() => {
     return localStorage.getItem('poysic_avatar') || '🎧';
@@ -284,9 +286,9 @@ export default function App() {
         {
           id: Math.random().toString(36).substring(2, 9),
           senderId: 'system',
-          senderName: 'Sistem PoySic',
+          senderName: t('chat.systemSender'),
           senderAvatar: '📢',
-          text: `${participant.name} telah menyertai bilik.`,
+          text: t('chat.userJoined', { name: participant.name }),
           timestamp: Date.now(),
           isSystem: true,
         },
@@ -305,9 +307,9 @@ export default function App() {
           {
             id: Math.random().toString(36).substring(2, 9),
             senderId: 'system',
-            senderName: 'Sistem PoySic',
+            senderName: t('chat.systemSender'),
             senderAvatar: '📢',
-            text: `${userName} telah meninggalkan bilik.`,
+            text: t('chat.userLeft', { name: userName }),
             timestamp: Date.now(),
             isSystem: true,
           },
@@ -521,9 +523,9 @@ export default function App() {
         {
           id: Math.random().toString(36).substring(2, 9),
           senderId: 'system',
-          senderName: 'Sistem PoySic',
+          senderName: t('chat.systemSender'),
           senderAvatar: '🎵',
-          text: `Anda telah mencadangkan "${track.name}" ke giliran lagu bilik.`,
+          text: t('chat.suggestedTrack', { track: track.name }),
           timestamp: Date.now(),
           isSystem: true,
         },
@@ -736,18 +738,18 @@ export default function App() {
       <footer className="border-t border-[#1C1C1C] py-5 px-4 text-xs font-mono text-[#8E8E8A] bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <div>
-            <span>POYSIC MVP &bull; SINKRONISASI MASA NYATA &bull; JAMENDO CC</span>
+            <span>{t('footer.tagline')}</span>
           </div>
           <div className="flex items-center gap-4 text-[#A0A09C]">
             <button onClick={() => setIsDocsOpen(true)} className="hover:text-[#F5F3EE] transition">
-              DOKUMENTASI
+              {t('footer.docs')}
             </button>
             <span>&bull;</span>
             <button onClick={() => setIsDonationOpen(true)} className="hover:text-[#FF4D2E] transition">
-              SAWERIA
+              {t('footer.saweria')}
             </button>
             <span>&bull;</span>
-            <span className="text-[#A8E6CF]">SIFAR IKLAN</span>
+            <span className="text-[#A8E6CF]">{t('footer.zeroAds')}</span>
           </div>
         </div>
       </footer>

@@ -35,8 +35,8 @@ test('2-browser sync: create room in A, join in B, play, verify audio currentTim
     await pageA.goto('http://localhost:5173');
     await pageA.waitForLoadState('domcontentloaded');
 
-    // Klik butang CIPTA BILIK SEGERA
-    const createRoomBtn = pageA.getByRole('button', { name: /CIPTA BILIK SEGERA/i });
+    // Klik butang CIPTA BILIK SEGERA / CREATE INSTANT ROOM
+    const createRoomBtn = pageA.getByRole('button', { name: /INSTANT ROOM|CIPTA BILIK SEGERA/i });
     await createRoomBtn.click();
 
     // Tunggu URL dikemas kini dengan parameter ?room=...
@@ -53,25 +53,25 @@ test('2-browser sync: create room in A, join in B, play, verify audio currentTim
     await pageB.click('body');
 
     // Jika modal nama muncul di Tab B, masukkan nama samaran dan klik mula
-    const joinModalInput = pageB.locator('input[placeholder*="Azim"], input[placeholder*="samaran"], input[aria-label*="samaran"]');
+    const joinModalInput = pageB.locator('input[placeholder*="Azim"], input[placeholder*="Alex"], input[placeholder*="samaran"], input[aria-label*="samaran"], input[aria-label*="NICKNAME"]');
     if (await joinModalInput.isVisible({ timeout: 2000 }).catch(() => false)) {
       await joinModalInput.fill('Pendengar B');
-      const startBtn = pageB.getByRole('button', { name: /Sertai Bilik/i });
+      const startBtn = pageB.getByRole('button', { name: /Sertai Bilik|JOIN ROOM/i });
       if (await startBtn.isVisible()) {
         await startBtn.click();
       }
     }
 
     // Tunggu kedua-dua tab menyambung ke bilik (bilangan peserta dipaparkan)
-    await pageA.waitForSelector('text=PENDENGAR', { timeout: 8000 });
-    await pageB.waitForSelector('text=PENDENGAR', { timeout: 8000 });
+    await pageA.locator('text=/PENDENGAR|LISTENERS/i').first().waitFor({ timeout: 8000 });
+    await pageB.locator('text=/PENDENGAR|LISTENERS/i').first().waitFor({ timeout: 8000 });
 
     // Pastikan kedua-dua halaman mempunyai interaksi pengguna aktif
     await pageA.click('body');
     await pageB.click('body');
 
     // Jika ada notifikasi autoplay disekat pelayar di Tab B, klik Aktifkan Audio
-    const resumeBtnB = pageB.getByRole('button', { name: /Aktifkan Audio/i });
+    const resumeBtnB = pageB.getByRole('button', { name: /Aktifkan Audio|Resume Audio|Enable Audio/i });
     if (await resumeBtnB.isVisible({ timeout: 1000 }).catch(() => false)) {
       await resumeBtnB.click();
     }
@@ -87,8 +87,8 @@ test('2-browser sync: create room in A, join in B, play, verify audio currentTim
       return audios.some((a: HTMLAudioElement) => a.readyState >= 2);
     }, { timeout: 12000 }).catch(() => {});
 
-    // 4. Tab A (Hos): Klik butang Main Muzik
-    const playBtn = pageA.getByRole('button', { name: /Main Muzik/i });
+    // 4. Tab A (Hos): Klik butang Main Muzik / Play Music
+    const playBtn = pageA.getByRole('button', { name: /Main Muzik|Play Music/i });
     await playBtn.click();
 
     // Tunggu selama 3 saat untuk audio bermain serentak dan penyegerakan jam Cristian stabil
@@ -149,7 +149,7 @@ test('host closes tab: listener promoted to new host within 5s', async ({ browse
     await pageA.goto('http://localhost:5173');
     await pageA.waitForLoadState('domcontentloaded');
 
-    const createRoomBtn = pageA.getByRole('button', { name: /CIPTA BILIK SEGERA/i });
+    const createRoomBtn = pageA.getByRole('button', { name: /INSTANT ROOM|CIPTA BILIK SEGERA/i });
     await createRoomBtn.click();
 
     await pageA.waitForURL(/.*\?room=[a-zA-Z0-9_-]+/);
@@ -159,12 +159,25 @@ test('host closes tab: listener promoted to new host within 5s', async ({ browse
     await pageB.goto(roomUrl);
     await pageB.waitForLoadState('domcontentloaded');
 
+    // Beri interaksi pengguna di Tab B
+    await pageB.click('body');
+
+    // Jika modal nama muncul di Tab B, masukkan nama samaran dan klik mula
+    const joinModalInput = pageB.locator('input[placeholder*="Azim"], input[placeholder*="Alex"], input[placeholder*="samaran"], input[aria-label*="samaran"], input[aria-label*="NICKNAME"]');
+    if (await joinModalInput.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await joinModalInput.fill('Pendengar B');
+      const startBtn = pageB.getByRole('button', { name: /Sertai Bilik|JOIN ROOM/i });
+      if (await startBtn.isVisible()) {
+        await startBtn.click();
+      }
+    }
+
     // Pastikan kedua-dua tab menyambung ke bilik
-    await pageA.waitForSelector('text=PENDENGAR', { timeout: 8000 });
-    await pageB.waitForSelector('text=PENDENGAR', { timeout: 8000 });
+    await pageA.locator('text=/PENDENGAR|LISTENERS/i').first().waitFor({ timeout: 8000 });
+    await pageB.locator('text=/PENDENGAR|LISTENERS/i').first().waitFor({ timeout: 8000 });
 
     // Sahkan pada mulanya Tab B adalah Pendengar (butang kawalan dinyahdayakan)
-    const playBtnB = pageB.locator('button[title*="Hanya hos bilik"]');
+    const playBtnB = pageB.getByRole('button', { name: /Play Music|Main Muzik/i });
     await expect(playBtnB).toBeDisabled();
 
     // 3. Tab A (Hos) ditutup
@@ -172,9 +185,8 @@ test('host closes tab: listener promoted to new host within 5s', async ({ browse
     await contextA.close();
 
     // 4. Sahkan Tab B dinaikkan pangkat menjadi Hos Baru dalam tempoh < 5 saat
-    // Apabila menjadi Hos, butang play di Tab B menjadi aktif dan judulnya berubah ke 'Main Muzik'
-    const newHostPlayBtn = pageB.locator('button[title="Main Muzik"], button[title="Jeda Muzik"]');
-    await expect(newHostPlayBtn).toBeEnabled({ timeout: 5000 });
+    // Apabila menjadi Hos, butang play di Tab B menjadi aktif
+    await expect(playBtnB).toBeEnabled({ timeout: 5000 });
 
     console.log('[Playwright Host Migration] Listener successfully promoted to new host within <5s');
   } finally {

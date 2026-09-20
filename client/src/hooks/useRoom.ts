@@ -3,6 +3,7 @@
  * Tujuan: Hook tersuai untuk menguruskan komunikasi bilik Socket.IO, kehadiran peserta, dan sembang/reaksi bilik.
  */
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Socket } from 'socket.io-client';
 import { Track, Participant, RoomState, ChatMessage, ReactionEvent } from '../types';
 
@@ -19,6 +20,7 @@ interface UseRoomOptions {
 }
 
 export function useRoom(options: UseRoomOptions) {
+  const { t } = useTranslation();
   const {
     socket,
     onSyncState,
@@ -121,9 +123,9 @@ export function useRoom(options: UseRoomOptions) {
         {
           id: Math.random().toString(36).substring(2, 9),
           senderId: 'system',
-          senderName: 'Sistem PoySic',
+          senderName: t('chat.systemSender'),
           senderAvatar: '📢',
-          text: `${participant.name} telah menyertai bilik.`,
+          text: t('chat.userJoined', { name: participant.name }),
           timestamp: Date.now(),
           isSystem: true,
         },
@@ -138,9 +140,9 @@ export function useRoom(options: UseRoomOptions) {
           {
             id: Math.random().toString(36).substring(2, 9),
             senderId: 'system',
-            senderName: 'Sistem PoySic',
+            senderName: t('chat.systemSender'),
             senderAvatar: '📢',
-            text: `${userName} telah meninggalkan bilik.`,
+            text: t('chat.userLeft', { name: userName }),
             timestamp: Date.now(),
             isSystem: true,
           },

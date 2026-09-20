@@ -1,97 +1,97 @@
-# Panduan Ujian Sinkronisasi 2-Tab (docs/TESTING.md)
+# 2-Tab Synchronization Testing Guide (`docs/TESTING.md`)
 
-> Panduan langkah demi langkah untuk menguji ketepatan penyegerakan audio (Clock Sync & Drift Correction) PoySic antara dua tab pelayar secara serentak.
-
----
-
-## 1. Prasyarat
-
-Pastikan kedua-dua pelayan PoySic sedang berjalan di terminal anda:
-1. **Backend Server:** `http://localhost:3000` (atau `npm run dev:server` dari root)
-2. **Frontend Client:** `http://localhost:5173` (atau `npm run dev:client` dari root)
+> Step-by-step guide to verify PoySic's real-time audio synchronization precision (Clock Sync & Drift Correction) between two concurrent browser tabs.
 
 ---
 
-## 2. Langkah Demi Langkah Ujian 2-Tab
+## 1. Prerequisites
+
+Ensure both PoySic servers are running in your terminal:
+1. **Backend Server:** `http://localhost:3000` (or `npm run dev:server` from root)
+2. **Frontend Client:** `http://localhost:5173` (or `npm run dev:client` from root)
+
+---
+
+## 2. Step-by-Step 2-Tab Test Flow
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor H as Pengguna (Tab 1 - Hos)
+    actor H as User (Tab 1 - Host)
     participant S as PoySic Server (Port 3000)
-    actor L as Pengguna (Tab 2 - Pendengar)
+    actor L as User (Tab 2 - Listener)
 
-    Note over H,L: Langkah 1: Buka Sesi Bilik
-    H->>S: Cipta bilik (cth: vibe-test)
-    S-->>H: Tetapkan sebagai Hos (hostId)
-    L->>S: Masuk bilik sama (?room=vibe-test)
-    S-->>L: Hantar RoomState terkini
+    Note over H,L: Step 1: Open Room Session
+    H->>S: Create room (e.g. vibe-test)
+    S-->>H: Assigned as Host (hostId)
+    L->>S: Join same room (?room=vibe-test)
+    S-->>L: Send current RoomState
 
-    Note over H,L: Langkah 2: Ujian Penyegerakan
-    H->>S: Klik Play (Trek 1)
+    Note over H,L: Step 2: Synchronization Verification
+    H->>S: Click Play (Track 1)
     S-->>L: Broadcast room:play (position, timestamp)
-    L->>L: Hitung expectedPosition & laraskan drift
+    L->>L: Calculate expectedPosition & reconcile drift
 ```
 
-### Langkah 1: Sediakan Tab 1 (Hos Bilik)
-1. Buka pelayar web (contohnya Chrome) dan layari:
+### Step 1: Setup Tab 1 (Room Host)
+1. Open your web browser (e.g. Chrome) and navigate to:
    ```
    http://localhost:5173
    ```
-2. Buka **Developer Tools / Console** dengan menekan `F12` (atau `Ctrl + Shift + I`), pilih tab **Console**.
-3. Di halaman utama PoySic, klik butang **"CIPTA BILIK SEGERA"** (atau masukkan slug bilik seperti `test-sync-1`).
-4. Anda kini berada di paparan bilik sebagai **Hos**. Catat kod bilik (contohnya `vibe-xxxx` atau rujuk URL di address bar: `http://localhost:5173/?room=vibe-xxxx`).
+2. Open **Developer Tools / Console** by pressing `F12` (or `Ctrl + Shift + I`), then select the **Console** tab.
+3. On the PoySic home page, click **"CREATE INSTANT ROOM"** (or enter a room slug like `test-sync-1`).
+4. You are now in the player view as the **Host**. Note the room code (e.g., `vibe-xxxx` or see the URL address bar: `http://localhost:5173/?room=vibe-xxxx`).
 
 ---
 
-### Langkah 2: Sediakan Tab 2 (Pendengar / Listener)
-1. Buka **Tab Baru** dalam pelayar yang sama (atau tetingkap *Incognito* / pelayar lain seperti Edge/Firefox).
-2. Buka **Developer Tools / Console** (`F12`) di Tab 2 juga.
-3. Layari URL bilik yang sama:
+### Step 2: Setup Tab 2 (Listener)
+1. Open a **New Tab** in the same browser (or an *Incognito* window / another browser like Edge or Firefox).
+2. Open **Developer Tools / Console** (`F12`) in Tab 2 as well.
+3. Navigate to the same room URL:
    ```
-   http://localhost:5173/?room=KOD_BILIK_ANDA
+   http://localhost:5173/?room=YOUR_ROOM_CODE
    ```
-4. Masukkan nama samaran berbeza (cth: `Pendengar 2`) dan pilih avatar.
-5. Perhatikan senarai peserta di kedua-dua tab:
-   - Tab 1 memaparkan 2 peserta (Hos & Pendengar 2).
-   - Tab 2 memaparkan lencana Hos pada nama Tab 1.
+4. Enter a nickname (e.g., `Listener 2`) and choose an avatar icon.
+5. Observe the participant list in both tabs:
+   - Tab 1 shows 2 participants (Host & Listener 2).
+   - Tab 2 displays the Host badge on Tab 1's user.
 
 ---
 
-### Langkah 3: Ujian Tindakan Audio & Pengesahan Console
+### Step 3: Audio Action Verification & Console Logs
 
-Jalankan senario ujian berikut di Tab 1 (Hos) dan perhatikan tindak balas di Tab 2:
+Perform the following test actions in Tab 1 (Host) and observe the reaction in Tab 2:
 
-| No | Tindakan Hos (Tab 1) | Jangkaan di Tab 2 (Pendengar) | Log Console yang Perlu Disemak |
+| # | Host Action (Tab 1) | Expected in Tab 2 (Listener) | Console Log to Verify |
 |:--:|---|---|---|
-| **1** | Klik **Play** | Audio mula bermain serentak di Tab 2. Piring vinyl berpusing. | Tab 2: `[SyncedAudio] Playing at position X.XXs` |
-| **2** | Klik **Pause** | Audio berhenti serta-merta di Tab 2 pada kedudukan yang sama. | Tab 2: `[SyncedAudio] Paused at position X.XXs` |
-| **3** | Tarik **Scrubbing Bar** (Seek ke 01:30) | Audio melompat ke saat yang sama di Tab 2. | Tab 2: `[SyncedAudio] Seek to position 90.00s` |
-| **4** | Klik **Tukar Lagu** dari carian/curated | Lagu baru dimuat dan dimainkan secara serentak di Tab 2. | Tab 2: `[SyncedAudio] Source changed to: ...` |
-| **5** | Biarkan lagu tamat (atau seek ke 5 saat sebelum tamat) | Apabila lagu tamat, auto-advance memainkan lagu seterusnya dalam giliran (`queue[0]`). | Tab 2: Memainkan lagu seterusnya tanpa jeda (*preloaded*). |
+| **1** | Click **Play** | Audio starts playing simultaneously in Tab 2. Vinyl disc spins. | Tab 2: `[SyncedAudio] Playing at position X.XXs` |
+| **2** | Click **Pause** | Audio pauses immediately in Tab 2 at the exact same position. | Tab 2: `[SyncedAudio] Paused at position X.XXs` |
+| **3** | Scrub **Seek Bar** (Seek to 01:30) | Audio jumps to the exact second in Tab 2. | Tab 2: `[SyncedAudio] Seek to position 90.00s` |
+| **4** | Click **Change Track** from search/curated | New track loads and plays synchronously in Tab 2. | Tab 2: `[SyncedAudio] Source changed to: ...` |
+| **5** | Let track end (or seek 5 seconds before end) | When track finishes, auto-advance plays the next song in the queue (`queue[0]`). | Tab 2: Plays next song seamlessly (*preloaded*). |
 
 ---
 
-### Langkah 4: Ujian Drift Correction (Simulasi Kelewatan)
+### Step 4: Drift Correction Test (Lag Simulation)
 
-Ujian ini memastikan enjin Cristian & `SyncedAudio` membetulkan audio secara automatik jika tab pengguna tertidur:
+This test verifies that Cristian's engine & `SyncedAudio` automatically reconcile audio if a listener's tab throttles or sleeps:
 
-1. Di **Tab 2**, kecilkan tetingkap (*minimize*) atau tukar ke tab lain selama 10–15 saat semasa muzik sedang dimainkan di Tab 1.
-2. Buka semula **Tab 2**:
-   - Jika tab tertidur menyebabkan kelewatan melebihi **450ms (0.45s)**, PoySic akan secara automatik menjalankan *hard seek* untuk menyelaraskan audio dengan Hos.
-3. Semak log console di Tab 2:
+1. In **Tab 2**, minimize the browser window or switch to another tab for 10–15 seconds while music is playing in Tab 1.
+2. Return to **Tab 2**:
+   - If tab throttling caused playback to lag by more than **450ms (0.45s)**, PoySic will automatically trigger a *hard seek* to lock back into step with the Host.
+3. Check the console log in Tab 2:
    ```
    [SyncedAudio] Drift corrected: 0.820s (Current: 45.10s -> Expected: 45.92s)
    ```
-4. Indikator di Player UI akan memaparkan bacaan drift dalam milisaat:
-   - **Hijau (< 450ms):** Audio berada dalam zon toleransi lancar.
-   - **Merah / Pulse (> 450ms):** Drift dikesan dan pembetulan automatik sedang/telah dijalankan.
+4. The drift indicator in the Player UI displays the drift in milliseconds:
+   - **Green (< 450ms):** Audio is within the smooth tolerance zone.
+   - **Amber / Pulse (> 450ms):** Drift detected and auto-correction executed.
 
 ---
 
-### Langkah 5: Pelaporan Jika Menemui Masalah
+### Step 5: Troubleshooting & Reporting
 
-Sekiranya audio tidak segerak atau drift tidak dibetulkan:
-1. Salin teks daripada console pelayar (khususnya log bertanda `[SyncedAudio]` dan `[ClockSync]`).
-2. Catat bacaan **RTT Latency** dan **Offset** yang dipaparkan pada kad spesifikasi teknikal bilik.
-3. Laporkan isu tersebut untuk pelarasan pemalar `driftThreshold` atau selang `heartbeat`.
+If audio is out of sync or drift is not reconciled:
+1. Copy the output from the browser console (specifically logs prefixed with `[SyncedAudio]` and `[ClockSync]`).
+2. Note the **RTT Latency** and **Clock Offset** displayed in the room technical telemetry card.
+3. Check network stability or adjust the `driftThreshold` parameter if needed.

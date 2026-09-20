@@ -4,6 +4,7 @@
  */
 import React from 'react';
 import { ListMusic, Play, Trash2, XCircle, Disc, Sparkles } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Track } from '../../types';
 
 interface QueueListProps {
@@ -25,6 +26,7 @@ export const QueueList: React.FC<QueueListProps> = ({
   onClearQueue,
   onSwitchToSearch,
 }) => {
+  const { t } = useTranslation();
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
@@ -38,18 +40,18 @@ export const QueueList: React.FC<QueueListProps> = ({
         <div className="flex items-center gap-2">
           <ListMusic className="w-4 h-4 text-[#FF4D2E]" />
           <h3 className="font-bold text-[#F5F3EE] text-sm font-mono uppercase tracking-wider">
-            Senarai Giliran ({queue.length})
+            {t('queue.title', { count: queue.length })}
           </h3>
         </div>
 
         {queue.length > 0 && isHost && (
           <button
             onClick={onClearQueue}
-            aria-label="Kosongkan senarai giliran"
+            aria-label={t('queue.clear')}
             className="min-h-[44px] px-2 text-xs text-[#FF4D2E] hover:underline flex items-center gap-1 font-mono transition"
           >
             <Trash2 className="w-3.5 h-3.5" />
-            <span>KOSONGKAN</span>
+            <span>{t('queue.clear')}</span>
           </button>
         )}
       </div>
@@ -67,7 +69,7 @@ export const QueueList: React.FC<QueueListProps> = ({
             </div>
             <div className="min-w-0">
               <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#A8E6CF]">
-                SEDANG DIMAINKAN
+                {t('queue.nowPlaying')}
               </span>
               <h4 className="text-xs font-semibold text-[#F5F3EE] truncate">
                 {currentTrack.name}
@@ -89,17 +91,17 @@ export const QueueList: React.FC<QueueListProps> = ({
         {queue.length === 0 ? (
           <div className="text-center py-12 text-[#8E8E8A] text-xs flex flex-col items-center gap-3">
             <Disc className="w-8 h-8 text-[#555555] animate-pulse" />
-            <p className="font-mono">Senarai giliran kosong.</p>
+            <p className="font-mono">{t('queue.empty')}</p>
             <p className="text-[#8E8E8A] text-[11px] max-w-xs font-mono">
-              Lagu akan dimainkan secara automatik mengikut susunan giliran sebaik sahaja lagu semasa tamat.
+              {t('queue.emptyDesc')}
             </p>
             <button
               onClick={onSwitchToSearch}
-              aria-label="Cari dan tambah lagu ke giliran"
+              aria-label={t('queue.searchAndAdd')}
               className="min-h-[44px] mt-2 px-4 py-2 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none font-bold text-xs font-mono transition flex items-center justify-center gap-1.5"
             >
               <Sparkles className="w-3.5 h-3.5 fill-current" />
-              <span>CARI & TAMBAH LAGU</span>
+              <span>{t('queue.searchAndAdd')}</span>
             </button>
           </div>
         ) : (
@@ -136,8 +138,8 @@ export const QueueList: React.FC<QueueListProps> = ({
 
                 <button
                   onClick={() => onPlayTrack(track)}
-                  title="Mainkan Sekarang"
-                  aria-label={`Mainkan sekarang: ${track.name}`}
+                  title={t('queue.playNow')}
+                  aria-label={`${t('queue.playNow')}: ${track.name}`}
                   className="min-h-[44px] min-w-[44px] p-2 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none transition font-bold flex items-center justify-center"
                 >
                   <Play className="w-3.5 h-3.5 fill-current" />
@@ -145,8 +147,8 @@ export const QueueList: React.FC<QueueListProps> = ({
 
                 <button
                   onClick={() => onRemoveFromQueue(track.id)}
-                  title="Buang dari Senarai Giliran"
-                  aria-label={`Buang ${track.name} daripada senarai giliran`}
+                  title={t('queue.removeFromQueue')}
+                  aria-label={`${t('queue.removeFromQueue')}: ${track.name}`}
                   className="min-h-[44px] min-w-[44px] p-2 text-[#8E8E8A] hover:text-[#FF4D2E] hover:bg-[#2A1412] border border-transparent hover:border-[#3D1A16] rounded-none transition flex items-center justify-center"
                 >
                   <XCircle className="w-3.5 h-3.5" />
@@ -158,7 +160,7 @@ export const QueueList: React.FC<QueueListProps> = ({
       </div>
 
       <div className="text-[11px] font-mono text-[#8E8E8A] border-t border-[#222222] pt-2 flex items-center justify-between">
-        <span>Auto-Play seterusnya diaktifkan secara tersinkron.</span>
+        <span>{t('queue.autoPlayNotice')}</span>
       </div>
     </div>
   );

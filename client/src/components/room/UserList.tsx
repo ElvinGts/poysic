@@ -4,6 +4,7 @@
  */
 import React from 'react';
 import { Users, Crown, Headphones, Copy, Check, Edit3, Clock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Participant } from '../../types';
 
 interface UserListProps {
@@ -20,6 +21,7 @@ export const UserList: React.FC<UserListProps> = ({
   roomId,
   onEditUsername,
 }) => {
+  const { t } = useTranslation();
   const [copied, setCopied] = React.useState(false);
 
   const handleCopyLink = () => {
@@ -31,13 +33,13 @@ export const UserList: React.FC<UserListProps> = ({
   };
 
   const formatJoinedTime = (ts: number) => {
-    if (!ts) return 'Baru sahaja';
+    if (!ts) return t('participants.justNow');
     const diffSecs = Math.floor((Date.now() - ts) / 1000);
-    if (diffSecs < 60) return 'Baru sahaja masuk';
+    if (diffSecs < 60) return t('participants.justNow');
     const diffMins = Math.floor(diffSecs / 60);
-    if (diffMins < 60) return `${diffMins} minit lalu`;
+    if (diffMins < 60) return t('participants.minsAgo', { count: diffMins });
     const diffHours = Math.floor(diffMins / 60);
-    return `${diffHours} jam lalu`;
+    return t('participants.hoursAgo', { count: diffHours });
   };
 
   return (
@@ -48,21 +50,21 @@ export const UserList: React.FC<UserListProps> = ({
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#A8E6CF] animate-pulse" />
             <h3 className="font-bold text-[#F5F3EE] text-sm font-mono uppercase tracking-wider">
-              Peserta PoySic ({participants.length})
+              {t('participants.title', { count: participants.length })}
             </h3>
           </div>
           <p className="text-xs text-[#8E8E8A] mt-0.5 font-mono">
-            Semua pendengar dalam bilik ini mendengar pada saat yang disegerakkan.
+            {t('participants.desc')}
           </p>
         </div>
 
         <button
           onClick={handleCopyLink}
-          aria-label="Salin pautan jemputan bilik"
+          aria-label={t('participants.invite')}
           className="min-h-[44px] flex items-center gap-1.5 px-3 py-2 bg-[#171717] hover:bg-[#222222] text-[#A8E6CF] border border-[#2E2E2E] rounded-none text-xs font-mono font-bold transition shrink-0"
         >
           {copied ? <Check className="w-3.5 h-3.5 text-[#A8E6CF]" /> : <Copy className="w-3.5 h-3.5" />}
-          <span>{copied ? 'PAUTAN DISALIN' : 'JEMPUT RAKAN'}</span>
+          <span>{copied ? t('participants.linkCopied') : t('participants.invite')}</span>
         </button>
       </div>
 
@@ -71,7 +73,7 @@ export const UserList: React.FC<UserListProps> = ({
         {participants.length === 0 ? (
           <div className="text-center py-10 text-[#8E8E8A] text-xs font-mono">
             <Users className="w-6 h-6 mx-auto mb-2 opacity-40 text-[#8E8E8A]" />
-            <p>Memuat senarai peserta...</p>
+            <p>{t('participants.loading')}</p>
           </div>
         ) : (
           participants.map((p) => {
@@ -101,7 +103,7 @@ export const UserList: React.FC<UserListProps> = ({
                       </span>
                       {isMe && (
                         <span className="px-1.5 py-0.5 rounded-none text-[10px] font-mono font-bold bg-[#16241E] text-[#A8E6CF] border border-[#244537] shrink-0">
-                          ANDA
+                          {t('participants.you')}
                         </span>
                       )}
                     </div>
@@ -111,12 +113,12 @@ export const UserList: React.FC<UserListProps> = ({
                         {p.isHost ? (
                           <span className="flex items-center gap-1 text-[#FF4D2E] font-medium">
                             <Crown className="w-3 h-3" />
-                            Hos Bilik
+                            {t('participants.host')}
                           </span>
                         ) : (
                           <span className="flex items-center gap-1 text-[#8E8E8A]">
                             <Headphones className="w-3 h-3 text-[#666666]" />
-                            Pendengar
+                            {t('participants.listener')}
                           </span>
                         )}
                       </span>
@@ -133,12 +135,12 @@ export const UserList: React.FC<UserListProps> = ({
                 {isMe && (
                   <button
                     onClick={onEditUsername}
-                    title="Tukar nama panggilan atau avatar anda"
-                    aria-label="Tukar nama panggilan atau avatar anda"
+                    title={t('participants.change')}
+                    aria-label={t('participants.change')}
                     className="min-h-[44px] flex items-center gap-1 text-xs font-mono text-[#A0A09C] hover:text-[#F5F3EE] bg-[#171717] hover:bg-[#222222] px-3 py-1.5 rounded-none border border-[#2E2E2E] transition shrink-0 ml-2"
                   >
                     <Edit3 className="w-3 h-3" />
-                    <span className="text-[11px] hidden sm:inline">TUKAR</span>
+                    <span className="text-[11px] hidden sm:inline">{t('participants.change')}</span>
                   </button>
                 )}
               </div>

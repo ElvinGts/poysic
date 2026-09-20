@@ -3,6 +3,7 @@
  * Tujuan: Modal dialog pemilihan nama pengguna dan avatar semasa menyertai bilik atau menukar profil dalam bilik.
  */
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { User, Sparkles, Check, X } from 'lucide-react';
 
 interface UsernameModalProps {
@@ -47,6 +48,7 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
   onSave,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const defaultName = currentUsername || initialUsername || 'Pendengar PoySic';
   const defaultAv = currentAvatar || initialAvatar || '🎧';
 
@@ -77,11 +79,11 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
     e.preventDefault();
     const trimmed = username.trim();
     if (trimmed.length < 2) {
-      setError('Sila masukkan sekurang-kurangnya 2 huruf.');
+      setError(t('modal.errorMin'));
       return;
     }
     if (trimmed.length > 24) {
-      setError('Nama dihadkan kepada 24 aksara.');
+      setError(t('modal.errorMax'));
       return;
     }
     setError('');
@@ -99,19 +101,19 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
             </div>
             <div>
               <h3 className="font-normal text-[#F5F3EE] text-lg font-editorial">
-                {isJoining ? 'Pilih Nama Pengguna Anda' : 'Kemaskini Nama Pengguna'}
+                {isJoining ? t('modal.usernameTitleJoin') : t('modal.usernameTitleUpdate')}
               </h3>
               <p className="text-xs text-[#8E8E8A] font-mono">
                 {targetRoomId
-                  ? `Menyertai bilik tersinkron: #${targetRoomId}`
-                  : 'Nama ini dipaparkan kepada rakan pendengar'}
+                  ? t('modal.usernameDescJoin', { roomId: targetRoomId })
+                  : t('modal.usernameDescUpdate')}
               </p>
             </div>
           </div>
           {onClose && !isJoining && (
             <button
               onClick={onClose}
-              aria-label="Tutup dialog nama pengguna"
+              aria-label={t('modal.close')}
               className="min-h-[44px] min-w-[44px] p-2 text-[#8E8E8A] hover:text-[#F5F3EE] rounded-none hover:bg-[#1A1A1A] transition flex items-center justify-center"
             >
               <X className="w-4 h-4" />
@@ -128,31 +130,31 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
             </div>
             <div className="min-w-0 flex-1">
               <span className="text-[10px] uppercase font-bold text-[#8E8E8A] block font-mono">
-                PRATONTON PROFIL:
+                {t('modal.previewProfile')}
               </span>
               <p className="font-bold text-[#F5F3EE] text-sm truncate font-mono">
                 {username.trim() || 'Nama Pilihan Anda'}
               </p>
               <span className="text-[11px] text-[#A8E6CF] font-mono">
-                {targetRoomId ? `Bilik: ${targetRoomId}` : 'Bersedia untuk sync'}
+                {targetRoomId ? `#${targetRoomId}` : t('modal.readyToSync')}
               </span>
             </div>
             <button
               type="button"
               onClick={handleRandomize}
-              title="Jana nama dan avatar rawak"
-              aria-label="Jana nama dan avatar rawak"
+              title={t('modal.randomBtn')}
+              aria-label={t('modal.randomBtn')}
               className="min-h-[44px] flex items-center gap-1.5 text-xs text-[#8E8E8A] hover:text-[#FF4D2E] bg-[#141414] border border-[#262626] hover:border-[#383838] px-3 py-2 rounded-none transition font-mono"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span className="text-[11px]">RAWAK</span>
+              <span className="text-[11px]">{t('modal.randomBtn')}</span>
             </button>
           </div>
 
           {/* Kotak Input Nama */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-mono text-[#A0A09C]">
-              NAMA PANGGILAN / SAMARAN:
+              {t('modal.nameLabel')}
             </label>
             <input
               type="text"
@@ -162,9 +164,9 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
                 setUsername(e.target.value);
                 if (error) setError('');
               }}
-              placeholder="Contoh: Azim, Farah, DJ Malam..."
+              placeholder={t('modal.namePlaceholder')}
               maxLength={24}
-              aria-label="Nama samaran pendengar"
+              aria-label={t('modal.nameLabel')}
               className="w-full bg-[#0A0A0A] border border-[#262626] focus:border-[#FF4D2E] rounded-none px-4 py-2.5 text-sm text-[#F5F3EE] placeholder-[#666666] focus:outline-none font-mono transition"
             />
             {error && (
@@ -173,14 +175,14 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
               </span>
             )}
             <span className="text-[11px] text-[#8E8E8A] pl-1 font-mono">
-              Nama ini akan kelihatan pada kawalan pemain audio, senarai peserta, dan sembang masa nyata.
+              {t('modal.nameHelp')}
             </span>
           </div>
 
           {/* Pemilih Avatar */}
           <div className="flex flex-col gap-2">
             <label className="text-xs font-mono text-[#A0A09C]">
-              PILIH IKON AVATAR:
+              {t('modal.avatarLabel')}
             </label>
             <div className="grid grid-cols-8 gap-2 p-2 bg-[#0A0A0A] border border-[#242424] rounded-none">
               {AVATAR_LIST.map((av) => (
@@ -188,7 +190,7 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
                   key={av}
                   type="button"
                   onClick={() => setAvatar(av)}
-                  aria-label={`Pilih avatar ${av}`}
+                  aria-label={`Avatar ${av}`}
                   className={`min-h-[44px] min-w-[44px] text-xl p-2 rounded-none transition flex items-center justify-center border ${
                     avatar === av
                       ? 'bg-[#1C120C] border-[#FF4D2E] scale-105 shadow'
@@ -207,19 +209,19 @@ export const UsernameModal: React.FC<UsernameModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                aria-label="Batal pemilihan profil"
+                aria-label={isJoining ? t('modal.cancel') : t('modal.close')}
                 className="min-h-[44px] flex-1 px-4 py-2.5 bg-[#171717] hover:bg-[#222222] text-[#A0A09C] hover:text-[#F5F3EE] rounded-none font-bold text-xs font-mono border border-[#2E2E2E] transition flex items-center justify-center"
               >
-                {isJoining ? 'BATAL' : 'TUTUP'}
+                {isJoining ? t('modal.cancel') : t('modal.close')}
               </button>
             )}
             <button
               type="submit"
-              aria-label={isJoining ? 'Sertai bilik sekarang' : 'Simpan perubahan profil'}
+              aria-label={isJoining ? t('modal.joinNow') : t('modal.saveChanges')}
               className="min-h-[44px] flex-1 px-4 py-2.5 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none font-bold text-xs font-mono shadow-lg transition flex items-center justify-center gap-1.5"
             >
               <Check className="w-4 h-4" />
-              <span>{isJoining ? 'SERTAI BILIK SEKARANG' : 'SIMPAN PERUBAHAN'}</span>
+              <span>{isJoining ? t('modal.joinNow') : t('modal.saveChanges')}</span>
             </button>
           </div>
         </form>

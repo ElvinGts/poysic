@@ -12,6 +12,7 @@ import {
   SlidersHorizontal,
   Heart,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface LandingViewProps {
   onJoinRoom: (roomId: string, username: string, avatar: string) => void;
@@ -33,6 +34,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
   onOpenDocs,
   onOpenDonation,
 }) => {
+  const { t } = useTranslation();
   const [roomIdInput, setRoomIdInput] = useState('');
   const [username, setUsername] = useState(() => {
     return localStorage.getItem('poysic_username') || 'Pendengar PoySic';
@@ -91,26 +93,26 @@ export const LandingView: React.FC<LandingViewProps> = ({
           {/* Metadata Header Bar */}
           <div className="flex items-center gap-3 text-[11px] font-mono tracking-widest text-[#888884] uppercase mb-5">
             <span className="inline-block w-2 h-2 bg-[#FF4D2E]" />
-            <span>CRISTIAN CLOCK-SYNC • CC AUDIO • ZERO ADS</span>
+            <span>{t('landing.meta')}</span>
           </div>
 
           {/* Heading Editorial Berkarakter (Instrument Serif dengan italic aksen) */}
           <h1 className="text-5xl sm:text-7xl lg:text-8xl font-normal tracking-tight text-[#F5F3EE] leading-[1.05] font-editorial">
-            Dengar lagu sama-sama. <br />
+            {t('landing.titleLine1')} <br />
             <span className="italic text-[#FF4D2E] block mt-1">
-              Walaupun jauh.
+              {t('landing.titleLine2')}
             </span>
           </h1>
 
           <p className="mt-6 text-[#A0A09C] text-base sm:text-lg max-w-xl leading-relaxed">
-            Pemain muzik masa nyata untuk kawan, pasangan, dan geng lepak. Tiada iklan yang memotong perbualan. Bukan sebab kami baik — sebab kami benci iklan.
+            {t('landing.subtitle')}
           </p>
 
           {/* Kad Profil Pendengar (Nama & Moniker Audio) */}
           <div className="mt-8 p-4 bg-[#121212] border border-[#262626] w-full max-w-lg">
             <div className="flex items-center justify-between text-[11px] font-mono text-[#888884] uppercase tracking-wider mb-2">
-              <span>IDENTITI PENDENGAR</span>
-              <span className="text-[#A8E6CF]">AUTO-SAVED</span>
+              <span>{t('landing.listenerIdentity')}</span>
+              <span className="text-[#A8E6CF]">{t('landing.autoSaved')}</span>
             </div>
 
             <div className="flex items-center gap-3">
@@ -121,7 +123,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
                 type="text"
                 value={username}
                 onChange={(e) => handleUpdateUsername(e.target.value)}
-                placeholder="Nama panggilan anda..."
+                placeholder={t('landing.namePlaceholder')}
                 maxLength={24}
                 className="flex-1 bg-[#0A0A0A] border border-[#2A2A2A] focus:border-[#FF4D2E] focus:outline-none px-3 py-2 text-sm text-[#F5F3EE] font-mono transition"
               />
@@ -129,13 +131,13 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
             {/* Pilihan Lencana Moniker (Gaya Plat Audio) */}
             <div className="flex items-center gap-1.5 mt-3 pt-2.5 border-t border-[#1F1F1F] flex-wrap">
-              <span className="text-[10px] font-mono text-[#8E8E8A] mr-1">LENCANA:</span>
+              <span className="text-[10px] font-mono text-[#8E8E8A] mr-1">{t('landing.badge')}</span>
               {MONIKER_BADGES.map((badge) => (
                 <button
                   key={badge}
                   type="button"
                   onClick={() => handleUpdateAvatar(badge)}
-                  aria-label={`Pilih lencana ${badge}`}
+                  aria-label={`Badge ${badge}`}
                   className={`min-h-[44px] min-w-[44px] px-2.5 py-2 text-xs font-mono transition border flex items-center justify-center ${
                     selectedAvatar === badge
                       ? 'bg-[#FF4D2E] text-[#0A0A0A] border-[#FF4D2E] font-bold'
@@ -152,20 +154,20 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <div className="mt-6 flex flex-col sm:flex-row gap-3 w-full max-w-lg">
             <button
               onClick={handleCreateInstantRoom}
-              aria-label="Cipta bilik segera"
+              aria-label={t('landing.instantRoom')}
               className="min-h-[44px] flex-1 flex items-center justify-center gap-2 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold py-3 px-5 text-sm tracking-wide transition transform active:translate-y-0.5"
             >
               <Sparkles className="w-4 h-4 fill-current" />
-              <span>CIPTA BILIK SEGERA</span>
+              <span>{t('landing.instantRoom')}</span>
             </button>
 
             <button
               onClick={() => setIsCreatingCustom(!isCreatingCustom)}
-              aria-label="Cipta bilik dengan nama khas"
+              aria-label={t('landing.customName')}
               className="min-h-[44px] flex items-center justify-center gap-2 bg-[#141414] hover:bg-[#1A1A1A] text-[#F5F3EE] border border-[#2C2C2C] text-sm font-mono px-4 py-3 transition"
             >
               <SlidersHorizontal className="w-3.5 h-3.5 text-[#A0A09C]" />
-              <span>NAMA KHAS</span>
+              <span>{t('landing.customName')}</span>
             </button>
           </div>
 
@@ -177,19 +179,19 @@ export const LandingView: React.FC<LandingViewProps> = ({
             >
               <input
                 type="text"
-                placeholder="ID bilik (cth: bilik-rindu, lepak-malam)..."
+                placeholder={t('landing.customPlaceholder')}
                 value={customRoomName}
                 onChange={(e) => setCustomRoomName(e.target.value)}
-                aria-label="Nama khas bilik"
+                aria-label={t('landing.customName')}
                 className="flex-1 bg-[#0A0A0A] border border-[#262626] focus:border-[#FF4D2E] focus:outline-none px-3 py-2 text-xs font-mono text-[#F5F3EE]"
                 autoFocus
               />
               <button
                 type="submit"
-                aria-label="Masuk ke bilik khas"
+                aria-label={t('landing.enter')}
                 className="min-h-[44px] bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold px-4 py-2 text-xs tracking-wider flex items-center justify-center"
               >
-                MASUK
+                {t('landing.enter')}
               </button>
             </form>
           )}
@@ -199,19 +201,19 @@ export const LandingView: React.FC<LandingViewProps> = ({
             <form onSubmit={handleJoinExistingRoom} className="flex gap-2">
               <input
                 type="text"
-                placeholder="Ada kod bilik kawan? Masukkan di sini..."
+                placeholder={t('landing.friendCodePlaceholder')}
                 value={roomIdInput}
                 onChange={(e) => setRoomIdInput(e.target.value)}
-                aria-label="Kod bilik kawan"
+                aria-label={t('landing.friendCodePlaceholder')}
                 className="flex-1 bg-[#121212] border border-[#262626] focus:border-[#A8E6CF] focus:outline-none px-3.5 py-2.5 text-xs font-mono text-[#F5F3EE] placeholder-[#767672]"
               />
               <button
                 type="submit"
                 disabled={!roomIdInput.trim()}
-                aria-label="Sertai bilik"
+                aria-label={t('landing.join')}
                 className="min-h-[44px] px-4 py-2.5 bg-[#1C1C1C] hover:bg-[#252525] disabled:opacity-40 text-[#A8E6CF] border border-[#2E2E2E] transition flex items-center gap-1.5 font-mono text-xs"
               >
-                <span>SERTAI</span>
+                <span>{t('landing.join')}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </form>
@@ -223,14 +225,14 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <div className="flex items-center justify-between pb-3 border-b border-[#1E1E1E]">
             <div>
               <div className="text-[10px] font-mono tracking-widest text-[#A0A09C] uppercase">
-                SESI BERKUMPUL
+                {t('landing.gatheringSessions')}
               </div>
               <h2 className="text-xl font-normal text-[#F5F3EE] font-editorial mt-0.5">
-                Bilik Komuniti Aktif
+                {t('landing.communityRooms')}
               </h2>
             </div>
             <span className="text-[10px] font-mono text-[#A8E6CF] bg-[#16241E] border border-[#244537] px-2 py-0.5">
-              LIVE 24/7
+              {t('landing.live247')}
             </span>
           </div>
 
@@ -263,7 +265,7 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
                 <div className="text-right">
                   <span className="text-[10px] font-mono text-[#A0A09C] group-hover:text-[#A8E6CF] flex items-center gap-1 transition">
-                    MASUK
+                    {t('landing.enterAction')}
                     <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                   </span>
                   <span className="text-[9px] font-mono text-[#767672] block">#{preset.id}</span>
@@ -273,8 +275,8 @@ export const LandingView: React.FC<LandingViewProps> = ({
           </div>
 
           <div className="pt-3 border-t border-[#1C1C1C] flex items-center justify-between text-[11px] font-mono text-[#8E8E8A]">
-            <span>FORMAT: STEREO CC AUDIO</span>
-            <span className="text-[#A8E6CF]">DRIFT &lt; 0.45s</span>
+            <span>{t('landing.formatAudio')}</span>
+            <span className="text-[#A8E6CF]">{t('landing.driftLimit')}</span>
           </div>
         </div>
       </section>
@@ -283,27 +285,27 @@ export const LandingView: React.FC<LandingViewProps> = ({
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         <div className="lg:col-span-7 bg-[#101010] border border-[#222222] p-6 sm:p-8 flex flex-col gap-4">
           <div className="text-[10px] font-mono tracking-widest text-[#A0A09C] uppercase">
-            SPEK TEKNIKAL
+            {t('landing.techSpecs')}
           </div>
           <h3 className="text-2xl sm:text-3xl font-normal font-editorial text-[#F5F3EE]">
-            Sinkronisasi Milisaat Tanpa Pelayan Berat
+            {t('landing.techTitle')}
           </h3>
           <p className="text-sm text-[#A0A09C] leading-relaxed">
-            Menggunakan adaptasi algoritma Cristian untuk mengukur kelewatan pusing-balik (RTT) rangkaian secara berkala. Pemain audio sentiasa membetulkan drift masa nyata secara automatik jika tab penyemak imbas anda tertidur di telefon.
+            {t('landing.techDesc')}
           </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-[#1C1C1C]">
             <div>
-              <div className="text-[10px] font-mono text-[#8E8E8A] uppercase">LATENCY BUFFER</div>
+              <div className="text-[10px] font-mono text-[#8E8E8A] uppercase">{t('landing.latencyBuffer')}</div>
               <div className="text-lg font-mono text-[#A8E6CF] font-bold mt-0.5">~18ms</div>
             </div>
             <div>
-              <div className="text-[10px] font-mono text-[#8E8E8A] uppercase">AUDIO FORMAT</div>
+              <div className="text-[10px] font-mono text-[#8E8E8A] uppercase">{t('landing.audioFormat')}</div>
               <div className="text-lg font-mono text-[#F5F3EE] font-bold mt-0.5">44.1kHz MP3</div>
             </div>
             <div>
-              <div className="text-[10px] font-mono text-[#8E8E8A] uppercase">IKLAN AUDIO</div>
-              <div className="text-lg font-mono text-[#FF4D2E] font-bold mt-0.5">0% (Sifar)</div>
+              <div className="text-[10px] font-mono text-[#8E8E8A] uppercase">{t('landing.audioAds')}</div>
+              <div className="text-lg font-mono text-[#FF4D2E] font-bold mt-0.5">{t('landing.zeroAdsStat')}</div>
             </div>
           </div>
         </div>
@@ -312,31 +314,31 @@ export const LandingView: React.FC<LandingViewProps> = ({
           <div className="flex flex-col gap-3">
             <div className="text-[10px] font-mono tracking-widest text-[#FF4D2E] uppercase flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 bg-[#FF4D2E]" />
-              IKRAR SAWERIA
+              {t('landing.saweriaPledge')}
             </div>
             <h3 className="text-2xl font-normal font-editorial text-[#F5F3EE]">
-              Bantu Kekalkan Pelayan Tanpa Iklan
+              {t('landing.saweriaTitle')}
             </h3>
             <p className="text-xs sm:text-sm text-[#A0A09C] leading-relaxed">
-              Jika anda dan pasangan atau sahabat menikmati lagu di sini, pertimbangkan belanja secawan kopi di Saweria untuk menampung kos pelayan WebSocket.
+              {t('landing.saweriaDesc')}
             </p>
           </div>
 
           <div className="flex items-center gap-3 pt-4 border-t border-[#202020]">
             <button
               onClick={onOpenDocs}
-              aria-label="Buka dokumentasi seni bina"
+              aria-label={t('landing.docsBtn')}
               className="min-h-[44px] flex-1 py-2.5 px-3 border border-[#333333] hover:border-[#555555] text-xs font-mono text-[#F5F3EE] transition flex items-center justify-center text-center"
             >
-              DOKUMENTASI
+              {t('landing.docsBtn')}
             </button>
             <button
               onClick={onOpenDonation}
-              aria-label="Sumbangan Saweria"
+              aria-label={t('landing.saweriaBtn')}
               className="min-h-[44px] flex-1 py-2.5 px-3 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold text-xs font-mono transition text-center flex items-center justify-center gap-1.5"
             >
               <Heart className="w-3 h-3 fill-current" />
-              <span>SAWERIA</span>
+              <span>{t('landing.saweriaBtn')}</span>
             </button>
           </div>
         </div>

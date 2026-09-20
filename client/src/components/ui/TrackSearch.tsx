@@ -4,6 +4,7 @@
  */
 import React, { useState } from 'react';
 import { Search, Play, Plus, Loader2, Disc, ExternalLink } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Track } from '../../types';
 import { GENRE_CATEGORIES, CURATED_TRACKS } from '../../data/curatedTracks';
 
@@ -20,6 +21,7 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
   onAddToQueue,
   onSearchJamendo,
 }) => {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('Semua');
   const [searchResults, setSearchResults] = useState<Track[]>(CURATED_TRACKS);
@@ -28,7 +30,7 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
 
   const filterByGenre = (genre: string) => {
     setSelectedGenre(genre);
-    if (genre === 'Semua') {
+    if (genre === 'Semua' || genre === 'All') {
       setSearchResults(CURATED_TRACKS);
     } else {
       const filtered = CURATED_TRACKS.filter((t) => t.genre === genre);
@@ -76,21 +78,21 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8E8E8A]" />
           <input
             type="text"
-            placeholder="Cari trek Jamendo CC (cth: lofi, chill, acoustic, jazz)..."
+            placeholder={t('search.placeholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            aria-label="Cari trek Jamendo Creative Commons"
+            aria-label={t('search.placeholder')}
             className="w-full bg-[#0C0C0C] border border-[#242424] focus:border-[#FF4D2E] focus:outline-none rounded-none pl-9 pr-3 py-2 text-xs font-mono text-[#F5F3EE] placeholder-[#666666] transition"
           />
         </div>
         <button
           type="submit"
           disabled={isSearching}
-          aria-label="Cari trek audio"
+          aria-label={t('search.searchBtn')}
           className="min-h-[44px] bg-[#FF4D2E] hover:bg-[#ff6145] disabled:opacity-50 text-[#0A0A0A] font-bold px-4 py-2 rounded-none transition flex items-center justify-center gap-1.5 text-xs font-mono"
         >
           {isSearching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
-          <span className="hidden sm:inline">CARI</span>
+          <span className="hidden sm:inline">{t('search.searchBtn')}</span>
         </button>
       </form>
 
@@ -101,14 +103,14 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
             key={genre}
             type="button"
             onClick={() => filterByGenre(genre)}
-            aria-label={`Tapis mengikut genre ${genre}`}
+            aria-label={`Genre ${genre}`}
             className={`min-h-[44px] px-3.5 py-2 text-xs font-mono rounded-none whitespace-nowrap transition border flex items-center justify-center ${
               selectedGenre === genre
                 ? 'bg-[#FF4D2E] text-[#0A0A0A] border-[#FF4D2E] font-bold'
                 : 'bg-[#141414] hover:bg-[#1C1C1C] text-[#8E8E8A] hover:text-[#F5F3EE] border-[#262626]'
             }`}
           >
-            {genre}
+            {genre === 'Semua' ? t('search.genreAll') : genre}
           </button>
         ))}
       </div>
@@ -118,12 +120,12 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
         {searchResults.length === 0 ? (
           <div className="text-center py-12 text-[#8E8E8A] text-xs flex flex-col items-center gap-2">
             <Disc className="w-8 h-8 text-[#555555] animate-pulse" />
-            <p className="font-mono">Tiada trek ditemui untuk carian tersebut.</p>
+            <p className="font-mono">{t('search.noTracks')}</p>
             <button
               onClick={() => filterByGenre('Semua')}
               className="min-h-[44px] text-[#FF4D2E] hover:underline text-xs mt-1 font-mono flex items-center"
             >
-              Kembali ke senarai pilihan popular
+              {t('search.backToPopular')}
             </button>
           </div>
         ) : (
@@ -183,8 +185,8 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
 
                   <button
                     onClick={() => handleQueueClick(track)}
-                    title="Tambah ke Giliran (Queue)"
-                    aria-label={`Tambah ${track.name} ke senarai giliran`}
+                    title={t('search.queueBtn')}
+                    aria-label={`Queue ${track.name}`}
                     className={`min-h-[44px] min-w-[44px] p-2.5 rounded-none text-xs font-mono transition flex items-center justify-center gap-1 border ${
                       isJustAdded
                         ? 'bg-[#A8E6CF] text-[#0A0A0A] border-[#A8E6CF] font-bold'
@@ -193,14 +195,14 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span className="hidden lg:inline text-[10px]">
-                      {isJustAdded ? 'DITAMBAH' : 'QUEUE'}
+                      {isJustAdded ? t('search.addedBtn') : t('search.queueBtn')}
                     </span>
                   </button>
 
                   <button
                     onClick={() => onPlayTrack(track)}
-                    title="Mainkan Sekarang dalam Bilik"
-                    aria-label={`Mainkan trek ${track.name}`}
+                    title={t('search.playNow')}
+                    aria-label={`Play ${track.name}`}
                     className="min-h-[44px] min-w-[44px] p-2.5 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] rounded-none transition font-bold flex items-center justify-center"
                   >
                     <Play className="w-3.5 h-3.5 fill-current" />
@@ -213,7 +215,7 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
       </div>
 
       <div className="text-[11px] font-mono text-[#8E8E8A] flex items-center justify-between border-t border-[#222222] pt-2">
-        <span>Lesen Jamendo Creative Commons (CC BY).</span>
+        <span>{t('search.license')}</span>
         <a
           href="https://www.jamendo.com"
           target="_blank"

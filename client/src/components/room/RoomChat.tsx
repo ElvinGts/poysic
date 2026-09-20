@@ -4,6 +4,7 @@
  */
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, MessageSquare } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { ChatMessage } from '../../types';
 
 interface RoomChatProps {
@@ -17,12 +18,12 @@ interface RoomChatProps {
 const QUICK_REACTIONS = [
   { emoji: '❤️', label: 'Love' },
   { emoji: '🔥', label: 'Vibe' },
-  { emoji: '🎵', label: 'Lagu Best' },
-  { emoji: '✨', label: 'Magik' },
-  { emoji: '🌙', label: 'Malam' },
-  { emoji: '☕', label: 'Santai' },
-  { emoji: '👏', label: 'Tepuk' },
-  { emoji: '🎉', label: 'Meriah' },
+  { emoji: '🎵', label: 'Music' },
+  { emoji: '✨', label: 'Magic' },
+  { emoji: '🌙', label: 'Night' },
+  { emoji: '☕', label: 'Coffee' },
+  { emoji: '👏', label: 'Clap' },
+  { emoji: '🎉', label: 'Party' },
 ];
 
 export const RoomChat: React.FC<RoomChatProps> = ({
@@ -32,6 +33,7 @@ export const RoomChat: React.FC<RoomChatProps> = ({
   onSendMessage,
   onSendReaction,
 }) => {
+  const { t } = useTranslation();
   const [inputText, setInputText] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -62,17 +64,17 @@ export const RoomChat: React.FC<RoomChatProps> = ({
         <div className="flex items-center justify-between px-3 py-2 bg-[#0C0C0C] border border-[#242424] rounded-none text-xs font-mono">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-[#A8E6CF] animate-ping" />
-            <span className="text-[#8E8E8A]">SEMBANG LANGSUNG:</span>
+            <span className="text-[#8E8E8A]">{t('chat.liveChat')}</span>
             <span className="font-mono font-bold text-[#F5F3EE]">#{roomId}</span>
           </div>
-          <span className="text-[10px] text-[#8E8E8A]">MASA NYATA</span>
+          <span className="text-[10px] text-[#8E8E8A]">{t('chat.realtime')}</span>
         </div>
       )}
 
       {/* Bar Reaksi Cepat */}
       <div className="bg-[#0C0C0C] border border-[#242424] rounded-none p-2 flex items-center justify-between gap-1 overflow-x-auto">
         <span className="text-[10px] uppercase font-bold text-[#8E8E8A] pl-1 shrink-0 font-mono">
-          REAKSI:
+          {t('chat.reactions')}
         </span>
         <div className="flex items-center gap-1">
           {QUICK_REACTIONS.map((r) => (
@@ -80,7 +82,7 @@ export const RoomChat: React.FC<RoomChatProps> = ({
               key={r.emoji}
               onClick={() => onSendReaction(r.emoji)}
               title={r.label}
-              aria-label={`Hantar reaksi emoji ${r.label}`}
+              aria-label={`Reaction ${r.label}`}
               className="min-h-[44px] min-w-[44px] p-2 bg-[#171717] hover:bg-[#222222] border border-[#2A2A2A] active:scale-125 rounded-none text-base transition transform shrink-0 flex items-center justify-center"
             >
               {r.emoji}
@@ -94,9 +96,9 @@ export const RoomChat: React.FC<RoomChatProps> = ({
         {messages.length === 0 ? (
           <div className="text-center py-10 text-[#8E8E8A] text-xs font-mono">
             <MessageSquare className="w-6 h-6 mx-auto mb-2 opacity-40 text-[#8E8E8A]" />
-            <p className="font-semibold text-[#F5F3EE]">Belum ada sembang dalam bilik ini.</p>
+            <p className="font-semibold text-[#F5F3EE]">{t('chat.empty')}</p>
             <p className="text-[11px] text-[#8E8E8A] mt-1">
-              Hantar mesej pertama atau reaksi emoji untuk memulakan perbualan bersama rakan pendengar!
+              {t('chat.emptyDesc')}
             </p>
           </div>
         ) : (
@@ -129,7 +131,7 @@ export const RoomChat: React.FC<RoomChatProps> = ({
                     <span className={`text-[11px] font-bold truncate font-mono ${
                       isMe ? 'text-[#0A0A0A]' : 'text-[#A8E6CF]'
                     }`}>
-                      {msg.senderName || 'Rakan Pendengar'} {isMe && <span className="opacity-80 text-[9px]">(Anda)</span>}
+                      {msg.senderName || t('chat.otherListener')} {isMe && <span className="opacity-80 text-[9px]">{t('chat.youBadge')}</span>}
                     </span>
                     <span className={`text-[9px] font-mono shrink-0 ${
                       isMe ? 'text-[#0A0A0A]/80' : 'text-[#8E8E8A]'
@@ -152,17 +154,17 @@ export const RoomChat: React.FC<RoomChatProps> = ({
       <form onSubmit={handleSend} className="flex gap-2 pt-2 border-t border-[#222222]">
         <input
           type="text"
-          placeholder="Tulis mesej kepada rakan pendengar..."
+          placeholder={t('chat.placeholder')}
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           maxLength={200}
-          aria-label="Tulis mesej sembang"
+          aria-label={t('chat.placeholder')}
           className="flex-1 bg-[#0A0A0A] border border-[#242424] focus:border-[#FF4D2E] focus:outline-none rounded-none px-3 py-2 text-xs font-mono text-[#F5F3EE] placeholder-[#666666]"
         />
         <button
           type="submit"
           disabled={!inputText.trim()}
-          aria-label="Hantar mesej"
+          aria-label={t('chat.placeholder')}
           className="min-h-[44px] min-w-[44px] bg-[#FF4D2E] hover:bg-[#ff6145] disabled:opacity-40 text-[#0A0A0A] px-3.5 py-2 rounded-none transition flex items-center justify-center font-bold"
         >
           <Send className="w-3.5 h-3.5" />

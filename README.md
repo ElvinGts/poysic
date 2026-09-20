@@ -1,35 +1,36 @@
 # PoySic
 
-> *"Dengar sama-sama, tak kira jauh."*
+> *"Listen together, no matter the distance."*
 
-PoySic ialah aplikasi web pemain muzik tersinkron (*synchronized music player*) masa nyata yang direka khas untuk pasangan (LDR), sahabat, dan keluarga agar dapat mendengar muzik kegemaran pada saat yang sama — tanpa sebarang iklan, tanpa penjejak.
+PoySic is a real-time synchronized music player web application designed for long-distance couples (LDR), best friends, and families to listen to music at the exact same millisecond — with zero commercial ads, zero surveillance tracking, and no required registration.
 
 ---
 
-## Ciri Utama
+## Key Features
 
-- **Zero Ads & Privasi** — Tiada iklan, tiada tracking, tiada pendaftaran wajib.
-- **Clock Sync Berketepatan Tinggi** — Algoritma Cristian dengan pengukuran latensi milisaat.
-- **Drift Correction Pintar** — Membetulkan kelewatan audio secara automatik (threshold 450ms).
-- **Katalog Muzik Jamendo CC** — Ribuan lagu percuma berlesen Creative Commons.
-- **Senarai Giliran (Queue)** — Tambah lagu, susun giliran, auto-play ke lagu seterusnya.
-- **Sembang Bilik & Reaksi Emoji** — Interaksi masa nyata bersama orang tersayang.
-- **Model Sumbangan Sukarela** — 100% percuma, disokong melalui Saweria.
+- **Zero Ads & Privacy-First** — No commercial ads, no tracking scripts, no mandatory sign-up.
+- **High-Precision Clock Synchronization** — Cristian's algorithm with millisecond round-trip latency measurements.
+- **Intelligent Drift Correction** — Automatically corrects audio lag (450ms threshold) via seamless hard seeks.
+- **Multi-Language Support (i18n)** — Available in 5 languages: English (default), Bahasa Melayu, Indonesian, Spanish, and Mandarin, with auto-detection and manual navbar toggle.
+- **Legal Music Catalogs** — Jamendo CC API and Audius decentralized streaming with zero paid API keys.
+- **Synchronized Queue** — Add tracks, reorder queue, and automatic cross-client auto-play for the next song.
+- **Live Room Chat & Emoji Reactions** — Real-time interactive messaging and floating emoji reactions.
+- **Voluntary Community Model** — 100% free and open, supported voluntarily via Saweria.
 
 ---
 
 ## Tech Stack
 
-| Layer | Teknologi |
+| Layer | Technology |
 |---|---|
-| **Frontend** | React 19, TypeScript, Vite, Tailwind CSS, Motion, Lucide Icons, Socket.IO Client |
+| **Frontend** | React 19, TypeScript, Vite, Tailwind CSS, Lucide Icons, Socket.IO Client, i18next |
 | **Backend** | Node.js, Express, Socket.IO, TypeScript |
-| **Audio Engine** | HTML5 Audio API + lapisan `SyncedAudio` drift correction |
-| **Music API** | Jamendo API v3.0 (Creative Commons) |
+| **Audio Engine** | HTML5 Audio API + `SyncedAudio` drift correction layer |
+| **Music Sources** | Jamendo API v3.0 (Creative Commons) & Audius Decentralized API |
 
 ---
 
-## Struktur Projek
+## Project Structure
 
 ```
 poysic/
@@ -37,6 +38,7 @@ poysic/
 │   ├── src/
 │   │   ├── components/     # UI components (player, queue, room, ui)
 │   │   ├── hooks/          # React hooks (useRoom, useClockSync, useSyncedAudio)
+│   │   ├── i18n/           # Multi-language configuration & 5 locale dictionaries (EN, MS, ID, ES, ZH)
 │   │   ├── lib/            # Core libraries (audio, socket, sync)
 │   │   ├── types/          # TypeScript interfaces
 │   │   └── App.tsx         # Main application component
@@ -46,18 +48,19 @@ poysic/
 ├── server/                 # Express + Socket.IO backend
 │   ├── src/
 │   │   ├── index.ts        # Server entry point
-│   │   ├── rooms.ts        # Room lifecycle management
+│   │   ├── rooms.ts        # Room lifecycle management & 60s grace GC
 │   │   ├── clockSync.ts    # Cristian's clock sync algorithm
-│   │   ├── queue.ts        # Shared queue logic
-│   │   ├── jamendo.ts      # Jamendo API client
+│   │   ├── queue.ts        # Shared queue logic & auto-advance
+│   │   ├── jamendo.ts      # Jamendo API client & fallback catalog
 │   │   └── types.ts        # Shared type definitions
 │   ├── package.json
 │   └── tsconfig.json
 │
 ├── docs/                   # Technical documentation
-│   ├── ARCHITECTURE.md     # System architecture & diagrams
-│   ├── ROADMAP.md          # Project roadmap & phases
-│   ├── SYNC_ENGINE.md      # Sync engine specification
+│   ├── ARCHITECTURE.md     # System architecture & sequence diagrams
+│   ├── ROADMAP.md          # Project roadmap & milestones
+│   ├── SYNC_ENGINE.md      # Synchronization engine mathematical specification
+│   ├── TESTING.md          # Step-by-step 2-tab sync testing guide
 │   └── API.md              # Socket.IO event catalog
 │
 ├── AGENTS.md               # Multi-agent governance guide
@@ -68,74 +71,74 @@ poysic/
 
 ---
 
-## Cara Run (Development Mode)
+## Running Locally (Development Mode)
 
-### Prasyarat
-- Node.js 18+ dan npm
-- Kunci API Jamendo (letak dalam `.env` — rujuk `.env.example`)
+### Prerequisites
+- Node.js 18+ and npm
+- Jamendo Client ID (optional, default fallback catalog included in `.env.example`)
 
-### Jalankan Server (Terminal 1)
+### 1. Start Backend Server (Terminal 1)
 ```bash
 cd server
 npm install
 npm run dev
 ```
 
-### Jalankan Client (Terminal 2)
+### 2. Start Frontend Client (Terminal 2)
 ```bash
 cd client
 npm install
 npm run dev
 ```
 
-Aplikasi akan sedia pada `http://localhost:5173` (client) dengan backend pada `http://localhost:3000`.
+The application will be accessible at `http://localhost:5173` with backend services on `http://localhost:3000`.
 
 ---
 
-## Panduan Deployment (Production)
+## Deployment Guide (Production)
 
 ### 1. Backend Deployment (Render / Railway / Docker / VPS)
-- **Render:** Cipta *Web Service* baru, hubungkan repositori, tetapkan Root Directory ke `server/`, atau import `server/render.yaml`.
-- **Railway:** Hubungkan repositori dan tetapkan Root Directory ke `server/` (menggunakan `server/railway.json`).
+- **Render:** Create a new *Web Service*, connect repository, set Root Directory to `server/`, or import `server/render.yaml`.
+- **Railway:** Connect repository and set Root Directory to `server/` (via `server/railway.json`).
 - **Docker / VPS:**
   ```bash
   cd server
   docker build -t poysic-server .
   docker run -d -p 3000:3000 --env-file .env poysic-server
   ```
-- **Environment Variables Backend:**
+- **Backend Environment Variables:**
   - `PORT=3000`
   - `NODE_ENV=production`
-  - `JAMENDO_CLIENT_ID=kunci_anda`
-  - `CLIENT_ORIGIN=https://poysic.vercel.app` (URL frontend anda)
+  - `JAMENDO_CLIENT_ID=your_key`
+  - `CLIENT_ORIGIN=https://poysic.vercel.app` (your frontend URL)
 
 ### 2. Frontend Deployment (Vercel / Netlify)
-- **Vercel:** Import repositori Git, pilih folder `client/` sebagai Root Directory (menggunakan `client/vercel.json`).
-- **Netlify:** Tetapkan Base directory ke `client/`, Build command `npm run build`, dan Publish directory `dist/` (menggunakan `client/netlify.toml`).
-- **Environment Variables Frontend:**
-  - `VITE_SOCKET_URL=https://poysic-api.onrender.com` (URL backend anda)
+- **Vercel:** Import Git repository, set Root Directory to `client/` (via `client/vercel.json`).
+- **Netlify:** Set Base directory to `client/`, Build command `npm run build`, and Publish directory `dist/` (via `client/netlify.toml`).
+- **Frontend Environment Variables:**
+  - `VITE_SOCKET_URL=https://poysic-api.onrender.com` (your backend URL)
 
 ---
 
-## Dokumentasi Lanjut
+## Detailed Documentation
 
-| Dokumen | Penerangan |
+| Document | Description |
 |---|---|
-| [TESTING.md](docs/TESTING.md) | Panduan langkah demi langkah ujian sync 2-tab & console |
-| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Diagram sistem, aliran data, komponen |
-| [ROADMAP.md](docs/ROADMAP.md) | Pelan pembangunan Fasa 1–3 |
-| [SYNC_ENGINE.md](docs/SYNC_ENGINE.md) | Spesifikasi enjin sinkronisasi audio |
-| [API.md](docs/API.md) | Katalog lengkap Socket.IO events |
-| [AGENTS.md](AGENTS.md) | Panduan pasukan agent, konvensyen & sekatan tech stack |
+| [TESTING.md](docs/TESTING.md) | Step-by-step 2-tab synchronization and console test instructions |
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | System topology, data flow, component interactions |
+| [ROADMAP.md](docs/ROADMAP.md) | Project milestones & feature development plan |
+| [SYNC_ENGINE.md](docs/SYNC_ENGINE.md) | In-depth specification of Cristian's clock sync & drift correction |
+| [API.md](docs/API.md) | Complete Socket.IO event reference |
+| [AGENTS.md](AGENTS.md) | Multi-agent conventions, guidelines, and tech stack boundaries |
 
 ---
 
-## Sumbangan & Sokongan
+## Community & Support
 
-PoySic adalah 100% percuma dan terbuka. Sekiranya anda menyukai projek ini, anda boleh menyokong kos pelayan kami di [Saweria](https://saweria.co).
+PoySic is 100% free and open-source. If you enjoy the project, you can help cover our server and WebSocket relay costs on [Saweria](https://saweria.co).
 
 ---
 
-## Lesen
+## License
 
-Dilesenkan di bawah [Lesen MIT](./LICENSE).
+Licensed under the [MIT License](./LICENSE).
