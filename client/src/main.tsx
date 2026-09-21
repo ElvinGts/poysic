@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import './i18n';
 import App from './App';
 import './index.css';
+import { ErrorBoundary } from './components/ui/ErrorBoundary';
 
 // Global Error & Promise Rejection Telemetry
 window.addEventListener('error', (event) => {
@@ -15,9 +16,12 @@ window.addEventListener('unhandledrejection', (event) => {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Suspense fallback={<div className="min-h-screen bg-[#0A0A0A]" />}>
-      <App />
-    </Suspense>
+    <ErrorBoundary>
+      <Suspense fallback={<div className="min-h-screen bg-[#0A0A0A]" />}>
+        <App />
+      </Suspense>
+    </ErrorBoundary>
   </StrictMode>,
 );
+
 

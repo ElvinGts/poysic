@@ -315,7 +315,11 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
                       {currentTrack?.image ? (
                         <img
                           src={currentTrack.image}
-                          alt={currentTrack.name}
+                          alt={`${currentTrack.name} cover`}
+                          width={96}
+                          height={96}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover"
                         />
                       ) : (
@@ -331,7 +335,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
 
             {/* Jarum Vinyl Stylus (Tonearm) */}
             <div
-              className={`absolute -top-2 right-2 w-12 h-20 transition-transform origin-top-right duration-500 pointer-events-none hidden sm:block ${
+              className={`absolute -top-2 right-2 w-12 h-20 tonearm-spring pointer-events-none hidden sm:block ${
                 isPlaying ? 'rotate-12' : '-rotate-12 opacity-40'
               }`}
             >
@@ -490,7 +494,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
               value={isMuted ? 0 : volume}
               onChange={(e) => onSetVolume(parseFloat(e.target.value))}
               aria-label={t('player.volume')}
-              className="flex-1 accent-[#FF4D2E] h-1.5 bg-[#222222] cursor-pointer"
+              className="analog-slider flex-1 cursor-pointer"
             />
             <span className="text-[10px] font-mono text-[#8E8E8A] w-9 text-right">
               {isMuted ? '0%' : `${Math.round(volume * 100)}%`}
@@ -743,7 +747,7 @@ export const PlayerView: React.FC<PlayerViewProps> = ({
           onClick={() => setActiveTab('chat')}
           title={t('player.chatPill')}
           aria-label={t('player.chatPill')}
-          className="fixed bottom-6 right-6 z-30 min-h-[44px] flex items-center gap-2.5 px-4 py-3 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold text-xs font-mono shadow-xl transition-all duration-200 cursor-pointer"
+          className="lg:hidden fixed bottom-6 right-6 z-30 min-h-[44px] flex items-center gap-2.5 px-4 py-3 bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold text-xs font-mono shadow-2xl transition-all duration-200 cursor-pointer border border-[#0A0A0A]"
         >
           <MessageSquare className="w-4 h-4 fill-current" />
           <span>{t('player.chatPill')}</span>

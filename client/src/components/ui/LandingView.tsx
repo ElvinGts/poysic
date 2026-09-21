@@ -119,13 +119,18 @@ export const LandingView: React.FC<LandingViewProps> = ({
               <span className="px-2.5 py-1.5 bg-[#1A1A1A] border border-[#333333] font-mono text-xs font-bold text-[#FF4D2E]">
                 {selectedAvatar}
               </span>
+              <label htmlFor="listener-nickname-input" className="sr-only">
+                {t('landing.listenerIdentity')}
+              </label>
               <input
+                id="listener-nickname-input"
                 type="text"
                 value={username}
                 onChange={(e) => handleUpdateUsername(e.target.value)}
                 placeholder={t('landing.namePlaceholder')}
+                aria-label={t('landing.listenerIdentity')}
                 maxLength={24}
-                className="flex-1 bg-[#0A0A0A] border border-[#2A2A2A] focus:border-[#FF4D2E] focus:outline-none px-3 py-2 text-sm text-[#F5F3EE] font-mono transition"
+                className="flex-1 bg-[#0A0A0A] border border-[#2A2A2A] focus:border-[#FF4D2E] focus:outline-none px-3 py-2.5 min-h-[44px] text-sm text-[#F5F3EE] font-mono transition"
               />
             </div>
 
@@ -177,19 +182,23 @@ export const LandingView: React.FC<LandingViewProps> = ({
               onSubmit={handleCreateNamedRoom}
               className="mt-3 w-full max-w-lg bg-[#121212] border border-[#FF4D2E]/60 p-3 flex gap-2 animate-fadeIn"
             >
+              <label htmlFor="custom-room-name-input" className="sr-only">
+                {t('landing.customName')}
+              </label>
               <input
+                id="custom-room-name-input"
                 type="text"
                 placeholder={t('landing.customPlaceholder')}
                 value={customRoomName}
                 onChange={(e) => setCustomRoomName(e.target.value)}
                 aria-label={t('landing.customName')}
-                className="flex-1 bg-[#0A0A0A] border border-[#262626] focus:border-[#FF4D2E] focus:outline-none px-3 py-2 text-xs font-mono text-[#F5F3EE]"
+                className="flex-1 bg-[#0A0A0A] border border-[#262626] focus:border-[#FF4D2E] focus:outline-none px-3 py-2 min-h-[44px] text-xs font-mono text-[#F5F3EE]"
                 autoFocus
               />
               <button
                 type="submit"
                 aria-label={t('landing.enter')}
-                className="min-h-[44px] bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold px-4 py-2 text-xs tracking-wider flex items-center justify-center"
+                className="min-h-[44px] min-w-[44px] bg-[#FF4D2E] hover:bg-[#ff6145] text-[#0A0A0A] font-bold px-4 py-2 text-xs tracking-wider flex items-center justify-center"
               >
                 {t('landing.enter')}
               </button>
@@ -198,20 +207,24 @@ export const LandingView: React.FC<LandingViewProps> = ({
 
           {/* Masuk Kod Bilik Sedia Ada */}
           <div className="mt-4 w-full max-w-lg">
-            <form onSubmit={handleJoinExistingRoom} className="flex gap-2">
+            <form onSubmit={handleJoinExistingRoom} className="flex gap-2 items-stretch">
+              <label htmlFor="friend-code-input" className="sr-only">
+                {t('landing.friendCodePlaceholder')}
+              </label>
               <input
+                id="friend-code-input"
                 type="text"
                 placeholder={t('landing.friendCodePlaceholder')}
                 value={roomIdInput}
                 onChange={(e) => setRoomIdInput(e.target.value)}
                 aria-label={t('landing.friendCodePlaceholder')}
-                className="flex-1 bg-[#121212] border border-[#262626] focus:border-[#A8E6CF] focus:outline-none px-3.5 py-2.5 text-xs font-mono text-[#F5F3EE] placeholder-[#767672]"
+                className="flex-1 bg-[#121212] border border-[#262626] focus:border-[#A8E6CF] focus:outline-none px-3.5 py-2.5 min-h-[44px] text-xs font-mono text-[#F5F3EE] placeholder-[#767672]"
               />
               <button
                 type="submit"
                 disabled={!roomIdInput.trim()}
                 aria-label={t('landing.join')}
-                className="min-h-[44px] px-4 py-2.5 bg-[#1C1C1C] hover:bg-[#252525] disabled:opacity-40 text-[#A8E6CF] border border-[#2E2E2E] transition flex items-center gap-1.5 font-mono text-xs"
+                className="min-h-[44px] min-w-[44px] px-4 py-2.5 bg-[#1C1C1C] hover:bg-[#252525] disabled:opacity-40 text-[#A8E6CF] border border-[#2E2E2E] transition flex items-center justify-center gap-1.5 font-mono text-xs"
               >
                 <span>{t('landing.join')}</span>
                 <ArrowRight className="w-3.5 h-3.5" />

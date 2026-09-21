@@ -89,7 +89,7 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
   return (
     <div className="flex flex-col h-full gap-4 font-sans">
       {/* Borang Carian */}
-      <form onSubmit={handleSearchSubmit} className="flex gap-2">
+      <form onSubmit={handleSearchSubmit} className="flex gap-2 items-stretch">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8E8E8A]" />
           <input
@@ -98,14 +98,14 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-label={t('search.placeholder')}
-            className="w-full bg-[#0C0C0C] border border-[#242424] focus:border-[#FF4D2E] focus:outline-none rounded-none pl-9 pr-3 py-2 text-xs font-mono text-[#F5F3EE] placeholder-[#666666] transition"
+            className="w-full h-11 bg-[#0C0C0C] border border-[#242424] focus:border-[#FF4D2E] focus:outline-none rounded-none pl-9 pr-3 text-xs font-mono text-[#F5F3EE] placeholder-[#666666] transition"
           />
         </div>
         <button
           type="submit"
           disabled={isSearching}
           aria-label={t('search.searchBtn')}
-          className="min-h-[44px] bg-[#FF4D2E] hover:bg-[#ff6145] disabled:opacity-50 text-[#0A0A0A] font-bold px-4 py-2 rounded-none transition flex items-center justify-center gap-1.5 text-xs font-mono"
+          className="h-11 min-w-[44px] bg-[#FF4D2E] hover:bg-[#ff6145] disabled:opacity-50 text-[#0A0A0A] font-bold px-4 rounded-none transition flex items-center justify-center gap-1.5 text-xs font-mono shrink-0"
         >
           {isSearching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
           <span className="hidden sm:inline">{t('search.searchBtn')}</span>
@@ -207,9 +207,12 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
                   <div className="relative w-11 h-11 rounded-none overflow-hidden flex-shrink-0 bg-[#1A1A1A] border border-[#2E2E2E]">
                     <img
                       src={track.image || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=80'}
-                      alt={track.name}
+                      alt={`${track.name} cover`}
+                      width={44}
+                      height={44}
                       className="w-full h-full object-cover"
                       loading="lazy"
+                      decoding="async"
                     />
                     {isCurrent && (
                       <div className="absolute inset-0 bg-[#0A0A0A]/70 flex items-center justify-center">
@@ -285,22 +288,24 @@ export const TrackSearch: React.FC<TrackSearchProps> = ({
 
       <div className="text-[11px] font-mono text-[#8E8E8A] flex items-center justify-between border-t border-[#222222] pt-2">
         <span>{t('search.license')}</span>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1">
           <a
             href="https://www.jamendo.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#A8E6CF] hover:underline flex items-center gap-1"
+            aria-label="Jamendo Creative Commons Licensing"
+            className="min-h-[44px] flex items-center px-2 text-[#A8E6CF] hover:underline gap-1"
           >
             <span>Jamendo</span>
             <ExternalLink className="w-3 h-3" />
           </a>
-          <span>&bull;</span>
+          <span aria-hidden="true">&bull;</span>
           <a
             href="https://audius.co"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#D8B4FE] hover:underline flex items-center gap-1"
+            aria-label="Audius Decentralized Music Network"
+            className="min-h-[44px] flex items-center px-2 text-[#D8B4FE] hover:underline gap-1"
           >
             <span>Audius</span>
             <ExternalLink className="w-3 h-3" />

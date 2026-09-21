@@ -390,7 +390,7 @@ export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
             onClick={() => setMode('waveform')}
             title="Tunjuk gelombang audio analog"
             aria-label="Mod gelombang audio analog"
-            className={`min-h-[44px] px-3 py-1 text-[11px] font-mono transition-colors flex items-center justify-center ${
+            className={`min-h-[44px] min-w-[44px] px-3 py-1 text-[11px] font-mono transition-colors flex items-center justify-center ${
               mode === 'waveform'
                 ? 'bg-[#FF4D2E] text-[#0A0A0A] font-bold'
                 : 'text-[#8E8E8A] hover:text-[#F5F3EE]'
@@ -403,7 +403,7 @@ export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
             onClick={() => setMode('bars')}
             title="Tunjuk equalizer spektrum jalur 36"
             aria-label="Mod equalizer spektrum jalur 36"
-            className={`min-h-[44px] px-3 py-1 text-[11px] font-mono transition-colors flex items-center justify-center ${
+            className={`min-h-[44px] min-w-[44px] px-3 py-1 text-[11px] font-mono transition-colors flex items-center justify-center ${
               mode === 'bars'
                 ? 'bg-[#FF4D2E] text-[#0A0A0A] font-bold'
                 : 'text-[#8E8E8A] hover:text-[#F5F3EE]'
@@ -416,7 +416,7 @@ export const AudioVisualizer: React.FC<AudioVisualizerProps> = ({
             onClick={() => setMode('radial')}
             title="Tunjuk alur radial piring vinyl"
             aria-label="Mod alur radial piring vinyl"
-            className={`min-h-[44px] px-3 py-1 text-[11px] font-mono transition-colors flex items-center justify-center ${
+            className={`min-h-[44px] min-w-[44px] px-3 py-1 text-[11px] font-mono transition-colors flex items-center justify-center ${
               mode === 'radial'
                 ? 'bg-[#FF4D2E] text-[#0A0A0A] font-bold'
                 : 'text-[#8E8E8A] hover:text-[#F5F3EE]'

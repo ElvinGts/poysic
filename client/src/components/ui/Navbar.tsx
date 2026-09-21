@@ -142,14 +142,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             <label htmlFor="language-select" className="sr-only">
               Language
             </label>
-            <div className="flex items-center bg-[#141414] border border-[#2A2A2A] hover:border-[#444444] transition px-2 min-h-[44px]">
+            <div className="flex items-center bg-[#141414] border border-[#2A2A2A] hover:border-[#444444] transition px-2.5 min-h-[44px]">
               <Globe className="w-3.5 h-3.5 text-[#A0A09C] mr-1.5 shrink-0" />
               <select
                 id="language-select"
                 value={currentLang}
                 onChange={(e) => handleLanguageChange(e.target.value as SupportedLanguageCode)}
                 aria-label="Select Language"
-                className="bg-transparent text-xs font-mono text-[#F5F3EE] focus:outline-none cursor-pointer py-2 pr-1"
+                className="bg-transparent text-xs font-mono text-[#F5F3EE] focus:outline-none cursor-pointer h-[44px] min-w-[44px] pr-1"
               >
                 {SUPPORTED_LANGUAGES.map((lang) => (
                   <option key={lang.code} value={lang.code} className="bg-[#141414] text-[#F5F3EE]">

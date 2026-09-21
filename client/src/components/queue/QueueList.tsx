@@ -63,7 +63,11 @@ export const QueueList: React.FC<QueueListProps> = ({
             <div className="w-10 h-10 rounded-none bg-[#1A1A1A] border border-[#2E2E2E] overflow-hidden flex-shrink-0 relative">
               <img
                 src={currentTrack.image || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=80'}
-                alt={currentTrack.name}
+                alt={`${currentTrack.name} cover`}
+                width={40}
+                height={40}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover animate-spin-slow"
               />
             </div>
@@ -117,7 +121,11 @@ export const QueueList: React.FC<QueueListProps> = ({
                 <div className="w-9 h-9 rounded-none bg-[#1A1A1A] border border-[#2E2E2E] overflow-hidden flex-shrink-0">
                   <img
                     src={track.image || 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&auto=format&fit=crop&q=80'}
-                    alt={track.name}
+                    alt={`${track.name} cover`}
+                    width={36}
+                    height={36}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover"
                   />
                 </div>

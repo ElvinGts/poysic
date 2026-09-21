@@ -748,16 +748,26 @@ export default function App() {
           <div>
             <span>{t('footer.tagline')}</span>
           </div>
-          <div className="flex items-center gap-4 text-[#A0A09C]">
-            <button onClick={() => setIsDocsOpen(true)} className="hover:text-[#F5F3EE] transition">
+          <div className="flex items-center gap-2 sm:gap-3 text-[#A0A09C]">
+            <button
+              type="button"
+              onClick={() => setIsDocsOpen(true)}
+              aria-label={t('footer.docs')}
+              className="min-h-[44px] flex items-center px-2.5 py-2 hover:text-[#F5F3EE] transition"
+            >
               {t('footer.docs')}
             </button>
-            <span>&bull;</span>
-            <button onClick={() => setIsDonationOpen(true)} className="hover:text-[#FF4D2E] transition">
+            <span aria-hidden="true">&bull;</span>
+            <button
+              type="button"
+              onClick={() => setIsDonationOpen(true)}
+              aria-label={t('footer.saweria')}
+              className="min-h-[44px] flex items-center px-2.5 py-2 hover:text-[#FF4D2E] transition"
+            >
               {t('footer.saweria')}
             </button>
-            <span>&bull;</span>
-            <span className="text-[#A8E6CF]">{t('footer.zeroAds')}</span>
+            <span aria-hidden="true">&bull;</span>
+            <span className="text-[#A8E6CF] px-1">{t('footer.zeroAds')}</span>
           </div>
         </div>
       </footer>
